@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: SimpleForum
+  datasource:
+    url: jdbc:mariadb://localhost:3306/simpleforum
+    username: ${DB_USER:simpleforum}
+    password: ${DB_PASSWORD:simpleforum}
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      auto-commit: false
+      connection-timeout: 3000
+      validation-timeout: 3000
+      max-lifetime: 60000
+      maximum-pool-size: 20
+      minimum-idle: 10
+      idle-timeout: 30000
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.MariaDBDialect
