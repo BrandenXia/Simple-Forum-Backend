@@ -2,10 +2,10 @@ spring:
   application:
     name: SimpleForum
   datasource:
-    url: jdbc:mariadb://localhost:3306/simpleforum
+    url: ${DB_URL:jdbc:mariadb://localhost:3306/simpleforum}
     username: ${DB_USER:simpleforum}
     password: ${DB_PASSWORD:simpleforum}
-    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: ${DB_DRIVER:org.mariadb.jdbc.Driver}
     hikari:
       auto-commit: false
       connection-timeout: 3000
@@ -20,4 +20,4 @@ spring:
       hibernate:
         hbm2ddl:
           auto: update
-        dialect: org.hibernate.dialect.MariaDBDialect
+        dialect: ${DB_DIALECT:org.hibernate.dialect.MariaDBDialect}
