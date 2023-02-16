@@ -17,18 +17,18 @@ import java.sql.Timestamp;
 
 @Component
 @Transactional
-public class UserWarningServiceImpl implements UserWarningService {
+public class UserWarningDaoImpl implements UserWarningDao {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    UserService userService;
+    UserDao userDao;
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     public Boolean createWarning(String user_id, String reason, String moderator_id) {
-        User user = userService.getUserByID(user_id);
-        User moderator = userService.getUserByID(moderator_id);
+        User user = userDao.getUserByID(user_id);
+        User moderator = userDao.getUserByID(moderator_id);
         if (user != null && moderator != null) {
             UserWarning warning = new UserWarning();
             warning.setID(NanoIdUtils.randomNanoId());
@@ -65,7 +65,7 @@ public class UserWarningServiceImpl implements UserWarningService {
                 warning.setUser(user);
             }
             if (moderator_id != null) {
-                User moderator = userService.getUserByID(moderator_id);
+                User moderator = userDao.getUserByID(moderator_id);
                 if (moderator != null) {
                     warning.setModeratorID(moderator_id);
                 }

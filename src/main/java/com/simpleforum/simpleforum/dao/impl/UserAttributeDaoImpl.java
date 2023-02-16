@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.service.impl;
+package com.simpleforum.simpleforum.dao.impl;
 
-import com.simpleforum.simpleforum.domain.UserAttribute;
+import com.simpleforum.simpleforum.dao.UserAttributeDao;
+import com.simpleforum.simpleforum.dao.UserDao;
 import com.simpleforum.simpleforum.domain.User;
-import com.simpleforum.simpleforum.service.UserService;
-import com.simpleforum.simpleforum.service.UserAttributeService;
+import com.simpleforum.simpleforum.domain.UserAttribute;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -15,12 +15,12 @@ import java.util.Map;
 
 @Component
 @Transactional
-public class UserAttributeServiceImpl implements UserAttributeService {
+public class UserAttributeDaoImpl implements UserAttributeDao {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    UserService userService;
+    UserDao userDao;
 
     final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
@@ -28,7 +28,7 @@ public class UserAttributeServiceImpl implements UserAttributeService {
     public Boolean setUserAttribute(String user_id, Map<String, Object> attributes) {
         UserAttribute userAttribute = new UserAttribute();
         userAttribute.setAttributes(attributes);
-        User user = userService.getUserByID(user_id);
+        User user = userDao.getUserByID(user_id);
         if (user != null) {
             user.setUserAttribute(userAttribute);
             userAttribute.setUser(user);
@@ -43,7 +43,7 @@ public class UserAttributeServiceImpl implements UserAttributeService {
 
     @Override
     public Boolean updateUserAttribute(String user_id, Map<String, Object> attributes) {
-        User user = userService.getUserByID(user_id);
+        User user = userDao.getUserByID(user_id);
         if (user != null) {
             UserAttribute userAttribute = user.getUserAttribute();
             userAttribute.setAttributes(attributes);
@@ -58,22 +58,8 @@ public class UserAttributeServiceImpl implements UserAttributeService {
     }
 
     @Override
-    public Boolean deleteUserAttribute(String user_id) {
-        User user = userService.getUserByID(user_id);
-        if (user != null) {
-            UserAttribute userAttribute = user.getUserAttribute();
-            this.entityManager.remove(userAttribute);
-            logger.info("UserAttribute deleted for user with id: {}", user_id);
-            return true;
-        } else {
-            logger.error("User not found for id: {}", user_id);
-            return false;
-        }
-    }
-
-    @Override
     public UserAttribute getUserAttribute(String user_id) {
-        User user = userService.getUserByID(user_id);
+        User user = userDao.getUserByID(user_id);
         if (user != null) {
             UserAttribute userAttribute = user.getUserAttribute();
             logger.info("UserAttribute get for user with id: {}", user_id);

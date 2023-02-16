@@ -1,8 +1,8 @@
-package com.simpleforum.simpleforum.service;
+package com.simpleforum.simpleforum.dao;
 
 import com.simpleforum.simpleforum.domain.User;
 
-public interface UserService {
+public interface UserDao {
     /**
      * Create a new user, return the user if success, return null if fail
      * @param username username

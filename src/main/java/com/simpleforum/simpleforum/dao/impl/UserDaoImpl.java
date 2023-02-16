@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.service.impl;
+package com.simpleforum.simpleforum.dao.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import com.simpleforum.simpleforum.dao.UserDao;
 import com.simpleforum.simpleforum.domain.User;
 import com.simpleforum.simpleforum.domain.UserWarning;
-import com.simpleforum.simpleforum.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 

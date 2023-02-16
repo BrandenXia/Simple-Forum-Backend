@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.service;
+package com.simpleforum.simpleforum.dao;
 
 import com.simpleforum.simpleforum.domain.User;
 import com.simpleforum.simpleforum.domain.UserWarning;
 
-public interface UserWarningService {
+public interface UserWarningDao {
     /**
      * Create a new warning, return the warning if success, return null if fail
      * @param user_id user id
