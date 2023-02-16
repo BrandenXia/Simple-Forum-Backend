@@ -14,6 +14,7 @@ public class UserAttributeConverter implements AttributeConverter<Map<String, Ob
     private final ObjectMapper objectMapper = new ObjectMapper();
     final Logger logger = LoggerFactory.getLogger(getClass());
 
+    // Convert Map<String, Object> to String
     @Override
     public String convertToDatabaseColumn(Map<String, Object> attribute) {
         String result = null;
@@ -27,6 +28,7 @@ public class UserAttributeConverter implements AttributeConverter<Map<String, Ob
         return result;
     }
 
+    // Convert String to Map<String, Object>
     @Override
     public Map<String, Object> convertToEntityAttribute(String userAttributeJSON) {
         Map<String, Object> result = null;
