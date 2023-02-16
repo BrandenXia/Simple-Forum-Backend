@@ -1,10 +1,10 @@
-package com.simpleforum.simpleforum.service.impl;
+package com.simpleforum.simpleforum.dao.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
+import com.simpleforum.simpleforum.dao.UserWarningDao;
 import com.simpleforum.simpleforum.domain.User;
 import com.simpleforum.simpleforum.domain.UserWarning;
-import com.simpleforum.simpleforum.service.UserService;
-import com.simpleforum.simpleforum.service.UserWarningService;
+import com.simpleforum.simpleforum.dao.UserDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -26,6 +26,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Override
     public Boolean createWarning(String user_id, String reason, String moderator_id) {
         User user = userDao.getUserByID(user_id);
         User moderator = userDao.getUserByID(moderator_id);
@@ -45,6 +46,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
         }
     }
 
+    @Override
     public Boolean deleteWarning(String id) {
         UserWarning warning = getWarningByID(id);
         if (warning != null) {
@@ -55,6 +57,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
         return false;
     }
 
+    @Override
     public Boolean updateWarning(String id, String reason, User user, String moderator_id) {
         UserWarning warning = getWarningByID(id);
         if (warning != null) {
@@ -76,6 +79,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
         return false;
     }
 
+    @Override
     public UserWarning getWarningByID(String id) {
         UserWarning warning = this.entityManager.find(UserWarning.class, id);
         if (warning != null) {
