@@ -8,15 +8,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-@Transactional
+@Repository
 public class UserDaoImpl implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
@@ -24,6 +23,7 @@ public class UserDaoImpl implements UserDao {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
+    @Transactional
     public User createUser(String username, String password, String email, String phoneNumber) {
         User user = new User();
         user.setID(NanoIdUtils.randomNanoId());
@@ -45,6 +45,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public Boolean deleteUser(String id) {
         User user = getUserByID(id);
         if (user != null) {
@@ -56,6 +57,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public Boolean updateUser(String id, String username, String password, String email, String phoneNumber) {
         User user = getUserByID(id);
         if (user != null) {

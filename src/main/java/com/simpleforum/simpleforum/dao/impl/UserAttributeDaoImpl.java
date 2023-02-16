@@ -8,13 +8,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-@Component
-@Transactional
+@Repository
 public class UserAttributeDaoImpl implements UserAttributeDao {
     @PersistenceContext
     private EntityManager entityManager;
@@ -42,6 +41,7 @@ public class UserAttributeDaoImpl implements UserAttributeDao {
     }
 
     @Override
+    @Transactional
     public Boolean updateUserAttribute(String user_id, Map<String, Object> attributes) {
         User user = userDao.getUserByID(user_id);
         if (user != null) {

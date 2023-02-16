@@ -1,7 +1,10 @@
 package com.simpleforum.simpleforum.dao;
 
 import com.simpleforum.simpleforum.domain.User;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
 public interface UserDao {
     /**
      * Create a new user, return the user if success, return null if fail
@@ -11,12 +14,14 @@ public interface UserDao {
      * @param phoneNumber phone number
      * @return User
      */
+    @Transactional
     User createUser(String username, String password, String email, String phoneNumber);
     /**
      * Delete a user, return true if success, return false if fail
      * @param id id
      * @return Boolean
      */
+    @Transactional
     Boolean deleteUser(String id);
     /**
      * Update a user, return true if success, return false if fail
@@ -27,6 +32,7 @@ public interface UserDao {
      * @param phoneNumber phone number
      * @return Boolean
      */
+    @Transactional
     Boolean updateUser(String id, String username, String password, String email, String phoneNumber);
     /**
      * Get a user by id, return the user if success, return null if fail

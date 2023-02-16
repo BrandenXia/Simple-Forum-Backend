@@ -10,13 +10,12 @@ import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
-@Component
-@Transactional
+@Repository
 public class UserWarningDaoImpl implements UserWarningDao {
     @PersistenceContext
     private EntityManager entityManager;
@@ -27,6 +26,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
+    @Transactional
     public UserWarning createWarning(String user_id, String reason, String moderator_id) {
         User user = userDao.getUserByID(user_id);
         User moderator = userDao.getUserByID(moderator_id);
@@ -48,6 +48,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
     }
 
     @Override
+    @Transactional
     public Boolean deleteWarning(String id) {
         UserWarning warning = getWarningByID(id);
         if (warning != null) {
@@ -59,6 +60,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
     }
 
     @Override
+    @Transactional
     public Boolean updateWarning(String id, String reason, User user, String moderator_id) {
         UserWarning warning = getWarningByID(id);
         if (warning != null) {
