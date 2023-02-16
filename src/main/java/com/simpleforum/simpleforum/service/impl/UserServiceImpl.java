@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
-        logger.info("User created: " + user);
+        logger.info("User created: {}", user);
         return user;
     }
 
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = getUserByID(id);
         if (user != null) {
             this.entityManager.remove(user);
-            logger.info("User deleted: " + user);
+            logger.info("User deleted: {}", user);
             return true;
         }
         return false;
@@ -72,10 +72,10 @@ public class UserServiceImpl implements UserService {
                 user.setPhoneNumber(phoneNumber);
             }
             this.entityManager.merge(user);
-            logger.info("User updated: " + user);
+            logger.info("User updated: {}", user);
             return true;
         } else {
-            logger.info("User not updated: " + id + " " + username + " " + password + " " + email + " " + phoneNumber);
+            logger.error("User not updated: {} {} {} {} {}", id, username, password, email, phoneNumber);
             return false;
         }
     }
@@ -84,10 +84,10 @@ public class UserServiceImpl implements UserService {
     public User getUserByID(String id) {
         User user = this.entityManager.find(User.class, id);
         if (user != null) {
-            logger.info("User found: " + user);
+            logger.info("User found: {}", user);
             return user;
         } else {
-            logger.info("User not found: " + id);
+            logger.error("User not found: {}", id);
             return null;
         }
     }
@@ -98,10 +98,10 @@ public class UserServiceImpl implements UserService {
                 .setParameter("username", username)
                 .getSingleResult();
         if (user != null) {
-            logger.info("User found: " + user);
+            logger.info("User found: {}", user);
             return user;
         } else {
-            logger.info("User not found: " + username);
+            logger.error("User not found: {}", username);
             return null;
         }
     }
@@ -112,10 +112,10 @@ public class UserServiceImpl implements UserService {
                 .setParameter("email", email)
                 .getSingleResult();
         if (user != null) {
-            logger.info("User found: " + user);
+            logger.info("User found: {}", user);
             return user;
         } else {
-            logger.info("User not found: " + email);
+            logger.error("User not found: {}", email);
             return null;
         }
     }
@@ -126,10 +126,10 @@ public class UserServiceImpl implements UserService {
                 .setParameter("phoneNumber", phoneNumber)
                 .getSingleResult();
         if (user != null) {
-            logger.info("User found: " + user);
+            logger.info("User found: {}", user);
             return user;
         } else {
-            logger.info("User not found: " + phoneNumber);
+            logger.error("User not found: {}", phoneNumber);
             return null;
         }
     }
