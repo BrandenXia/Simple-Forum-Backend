@@ -1,10 +1,11 @@
-package com.simpleforum.simpleforum.model;
+package com.simpleforum.simpleforum.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simpleforum.simpleforum.converter.UserAttributeConverter;
+import com.simpleforum.simpleforum.dao.UserAttributeConverter;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +14,15 @@ import java.util.Map;
 
 @Entity
 @Table(name = "user_attributes")
+@EqualsAndHashCode
 public class UserAttribute {
     @Id
-    @JoinColumn(name = "user_id")
-    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @Getter @Setter private User user;
 
-    @Column
-    @Getter @Setter private String customerAttributeJSON;
+    @Transient
+    @Getter @Setter private String UserAttributeJSON;
 
     @Convert(converter = UserAttributeConverter.class)
     @Getter @Setter private Map<String, String> attributes;
@@ -28,11 +30,11 @@ public class UserAttribute {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public void serializeAttributes() throws JsonProcessingException {
-        this.customerAttributeJSON = objectMapper.writeValueAsString(this.attributes);
+        this.UserAttributeJSON = objectMapper.writeValueAsString(this.attributes);
     }
 
     public void deserializeAttributes() throws IOException {
-        this.attributes = objectMapper.readValue(this.customerAttributeJSON, new TypeReference<Map<String, String>>() {});
+        this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<Map<String, String>>() {});
     }
 
     public UserAttribute() {
