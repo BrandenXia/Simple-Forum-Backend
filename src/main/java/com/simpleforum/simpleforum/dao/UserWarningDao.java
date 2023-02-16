@@ -6,12 +6,13 @@ import com.simpleforum.simpleforum.domain.UserWarning;
 public interface UserWarningDao {
     /**
      * Create a new warning, return the warning if success, return null if fail
-     * @param user_id user id
-     * @param reason reason
+     *
+     * @param user_id      user id
+     * @param reason       reason
      * @param moderator_id moderator id
-     * @return UserWarning
+     * @return UserWarning or null
      */
-    Boolean createWarning(String user_id, String reason, String moderator_id);
+    UserWarning createWarning(String user_id, String reason, String moderator_id);
     /**
      * Delete a warning, return true if success, return false if fail
      * @param id warning id

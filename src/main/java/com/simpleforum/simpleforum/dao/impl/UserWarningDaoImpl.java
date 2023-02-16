@@ -27,7 +27,7 @@ public class UserWarningDaoImpl implements UserWarningDao {
     final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public Boolean createWarning(String user_id, String reason, String moderator_id) {
+    public UserWarning createWarning(String user_id, String reason, String moderator_id) {
         User user = userDao.getUserByID(user_id);
         User moderator = userDao.getUserByID(moderator_id);
         if (user != null && moderator != null) {
@@ -38,11 +38,12 @@ public class UserWarningDaoImpl implements UserWarningDao {
             warning.setDate(new Timestamp(System.currentTimeMillis()));
             warning.setUser(user);
             user.getUserWarnings().add(warning);
+            this.entityManager.persist(warning);
             logger.info("Warning added: " + warning);
-            return true;
+            return warning;
         } else {
             logger.info("Warning not added: " + user_id + " " + reason + " " + moderator_id);
-            return false;
+            return null;
         }
     }
 
