@@ -34,7 +34,8 @@ public class UserAttribute {
     }
 
     public void deserializeAttributes() throws IOException {
-        this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<Map<String, Object>>() {});
+        this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<>() {
+        });
     }
 
     public UserAttribute() {
