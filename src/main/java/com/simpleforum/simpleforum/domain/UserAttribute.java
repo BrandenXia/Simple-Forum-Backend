@@ -25,7 +25,7 @@ public class UserAttribute {
     @Getter @Setter private String UserAttributeJSON;
 
     @Convert(converter = UserAttributeConverter.class)
-    @Getter @Setter private Map<String, String> attributes;
+    @Getter @Setter private Map<String, Object> attributes;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -34,7 +34,7 @@ public class UserAttribute {
     }
 
     public void deserializeAttributes() throws IOException {
-        this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<Map<String, String>>() {});
+        this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<Map<String, Object>>() {});
     }
 
     public UserAttribute() {

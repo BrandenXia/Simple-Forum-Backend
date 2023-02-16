@@ -19,7 +19,7 @@ public class UserAttributeService {
     @Autowired
     UserService userService;
 
-    public void addUserAttribute(String user_id, Map<String, String> attributes) {
+    public void addUserAttribute(String user_id, Map<String, Object> attributes) {
         UserAttribute userAttribute = new UserAttribute();
         userAttribute.setAttributes(attributes);
         User user = userService.getUserByID(user_id);
@@ -28,7 +28,7 @@ public class UserAttributeService {
         this.entityManager.persist(user);
     }
 
-    public void updateUserAttribute(String user_id, Map<String, String> attributes) {
+    public void updateUserAttribute(String user_id, Map<String, Object> attributes) {
         User user = userService.getUserByID(user_id);
         UserAttribute userAttribute = user.getUserAttribute();
         userAttribute.setAttributes(attributes);
