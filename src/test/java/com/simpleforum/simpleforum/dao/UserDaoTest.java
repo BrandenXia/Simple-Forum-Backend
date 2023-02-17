@@ -21,14 +21,14 @@ class UserDaoTest {
     @Test
     void deleteUser() {
         User user = userDao.createUser("test", "test", "test@test.com", "123456789");
-        assert userDao.deleteUser(user.getID());
+        userDao.deleteUser(user);
         assert userDao.getUserByID(user.getID()) == null;
     }
 
     @Test
     void updateUser() {
         User user = userDao.createUser("test", "test", "test@test.com", "123456789");
-        assert userDao.updateUser(user.getID(), "test2", "test2", "test2@test.com", "987654321");
+        userDao.updateUser(user, "test2", "test2", "test2@test.com", "987654321");
         assert userDao.getUserByID(user.getID()).getUsername().equals("test2");
     }
 
