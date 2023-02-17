@@ -31,12 +31,8 @@ public class UserDaoImpl implements UserDao {
         user.setPassword(password);
         List<UserWarning> userWarnings = new ArrayList<>();
         user.setUserWarnings(userWarnings);
-        if (email != null) {
-            user.setEmail(email);
-        }
-        if (phoneNumber != null) {
-            user.setPhoneNumber(phoneNumber);
-        }
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
@@ -46,40 +42,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     @Transactional
-    public Boolean deleteUser(String id) {
-        User user = getUserByID(id);
-        if (user != null) {
-            this.entityManager.remove(user);
-            logger.info("User deleted: {}", user);
-            return true;
-        }
-        return false;
+    public void deleteUser(User user) {
+        this.entityManager.remove(user);
+        logger.info("User deleted: {}", user);
     }
 
     @Override
     @Transactional
-    public Boolean updateUser(String id, String username, String password, String email, String phoneNumber) {
-        User user = getUserByID(id);
-        if (user != null) {
-            if (username != null) {
-                user.setUsername(username);
-            }
-            if (password != null) {
-                user.setPassword(password);
-            }
-            if (email != null) {
-                user.setEmail(email);
-            }
-            if (phoneNumber != null) {
-                user.setPhoneNumber(phoneNumber);
-            }
-            this.entityManager.merge(user);
-            logger.info("User updated: {}", user);
-            return true;
-        } else {
-            logger.error("User not updated: {} {} {} {} {}", id, username, password, email, phoneNumber);
-            return false;
-        }
+    public void updateUser(User user, String username, String password, String email, String phoneNumber) {
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        this.entityManager.merge(user);
+        logger.info("User updated: {}", user);
     }
 
     @Override

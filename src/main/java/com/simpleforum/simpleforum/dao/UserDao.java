@@ -18,22 +18,21 @@ public interface UserDao {
     User createUser(String username, String password, String email, String phoneNumber);
     /**
      * Delete a user, return true if success, return false if fail
-     * @param id id
-     * @return Boolean
+     * @param user user
      */
     @Transactional
-    Boolean deleteUser(String id);
+    void deleteUser(User user);
     /**
      * Update a user, return true if success, return false if fail
-     * @param id id
-     * @param username username
-     * @param password password
-     * @param email email
+     *
+     * @param user        user
+     * @param username    username
+     * @param password    password
+     * @param email       email
      * @param phoneNumber phone number
-     * @return Boolean
      */
     @Transactional
-    Boolean updateUser(String id, String username, String password, String email, String phoneNumber);
+    void updateUser(User user, String username, String password, String email, String phoneNumber);
     /**
      * Get a user by id, return the user if success, return null if fail
      * @param id id

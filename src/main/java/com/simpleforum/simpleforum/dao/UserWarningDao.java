@@ -5,39 +5,39 @@ import com.simpleforum.simpleforum.domain.UserWarning;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public interface UserWarningDao {
     /**
-     * Create a new warning, return the warning if success, return null if fail
-     *
-     * @param user_id      user id
-     * @param reason       reason
-     * @param moderator_id moderator id
-     * @return UserWarning or null
-     */
-    @Transactional
-    UserWarning createWarning(String user_id, String reason, String moderator_id);
-    /**
-     * Delete a warning, return true if success, return false if fail
-     * @param id warning id
-     * @return Boolean
-     */
-    @Transactional
-    Boolean deleteWarning(String id);
-    /**
-     * Update a warning, return true if success, return false if fail
-     * @param id warning id
-     * @param reason reason
+     * Create user warning
      * @param user user
-     * @param moderator_id moderator id
-     * @return Boolean
+     * @param userWarning user warning
      */
     @Transactional
-    Boolean updateWarning(String id, String reason, User user, String moderator_id);
+    void addUserWarning(User user, UserWarning userWarning);
+
     /**
-     * Get a warning by id, return the warning if success, return null if fail
-     * @param id warning id
-     * @return UserWarning
+     * Delete user warning
+     * @param user user
+     * @param userWarning user warning
      */
-    UserWarning getWarningByID(String id);
+    @Transactional
+    void deleteUserWarning(User user, UserWarning userWarning);
+
+    /**
+     * Get user warning by id
+     * @param id id
+     * @return user warning
+     */
+    UserWarning getUserWarningById(String id);
+
+    /**
+     * Get user warning by user
+     * @param user user
+     * @param limit limit
+     * @return user warning
+     */
+    List<UserWarning> getUserWarningByUser(User user, Integer limit);
+    List<UserWarning> getUserWarningByUser(User user);
 }
