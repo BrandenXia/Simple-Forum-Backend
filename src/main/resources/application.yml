@@ -16,6 +16,17 @@ spring:
       hibernate:
         hbm2ddl:
           auto: update
+  data:
+    redis:
+      timeout: 10000
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+  cache:
+    redis:
+      time-to-live: 3600000
 
 ---
 

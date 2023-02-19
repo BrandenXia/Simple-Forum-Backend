@@ -19,13 +19,19 @@ public class UserAttribute {
     @Id
     @JoinColumn(name = "user_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @Getter @Setter private User user;
+    @Getter
+    @Setter
+    private User user;
 
     @Transient
-    @Getter @Setter private String UserAttributeJSON;
+    @Getter
+    @Setter
+    private String UserAttributeJSON;
 
     @Convert(converter = UserAttributeConverter.class)
-    @Getter @Setter private Map<String, Object> attributes;
+    @Getter
+    @Setter
+    private Map<String, Object> attributes;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

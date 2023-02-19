@@ -2,16 +2,15 @@ package com.simpleforum.simpleforum.dao;
 
 import com.simpleforum.simpleforum.domain.User;
 import com.simpleforum.simpleforum.domain.UserWarning;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Repository
 public interface UserWarningDao {
     /**
      * Create user warning
-     * @param user user
+     *
+     * @param user        user
      * @param userWarning user warning
      */
     @Transactional
@@ -19,7 +18,8 @@ public interface UserWarningDao {
 
     /**
      * Delete user warning
-     * @param user user
+     *
+     * @param user        user
      * @param userWarning user warning
      */
     @Transactional
@@ -27,6 +27,7 @@ public interface UserWarningDao {
 
     /**
      * Get user warning by id
+     *
      * @param id id
      * @return user warning
      */
@@ -34,10 +35,12 @@ public interface UserWarningDao {
 
     /**
      * Get user warning by user
-     * @param user user
+     *
+     * @param user  user
      * @param limit limit
      * @return user warning
      */
     List<UserWarning> getUserWarningByUser(User user, Integer limit);
+
     List<UserWarning> getUserWarningByUser(User user);
 }

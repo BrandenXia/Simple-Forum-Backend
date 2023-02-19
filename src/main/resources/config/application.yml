@@ -8,6 +8,13 @@ spring:
     properties:
       hibernate:
         dialect: ${DB_DIALECT:org.hibernate.dialect.MariaDBDialect}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      username: ${REDIS_USERNAME:}
+      password: ${REDIS_PASSWORD:root}
+      database: ${REDIS_DATABASE:0}
 
 ---
 

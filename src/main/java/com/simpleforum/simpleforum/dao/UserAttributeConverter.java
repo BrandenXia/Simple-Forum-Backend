@@ -34,7 +34,8 @@ public class UserAttributeConverter implements AttributeConverter<Map<String, Ob
         Map<String, Object> result = null;
 
         try {
-            result = objectMapper.readValue(userAttributeJSON, new TypeReference<HashMap<String, Object>>() {});
+            result = objectMapper.readValue(userAttributeJSON, new TypeReference<HashMap<String, Object>>() {
+            });
         } catch (final JsonProcessingException e) {
             logger.error("JSON reading error: {}", e.getMessage());
         }
