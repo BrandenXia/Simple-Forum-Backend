@@ -24,7 +24,6 @@ class UserAttributeRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserAttribute userAttribute = new UserAttribute();
         userAttribute.setUser(user);

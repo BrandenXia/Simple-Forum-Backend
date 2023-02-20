@@ -17,7 +17,6 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         assert userRepository.getUserByUsername("test") != null;
     }
@@ -27,9 +26,8 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
-        assert userRepository.getUserByID(user.getID()) == null;
+        assert userRepository.isUserExistsByUsername("test");
     }
 
     @Test
@@ -37,7 +35,6 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         userRepository.updateUser(user, "test2", "test2", "test2@test.com", "987654321");
         assert userRepository.getUserByID(user.getID()).getUsername().equals("test2");
@@ -48,7 +45,6 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         User user2 = userRepository.getUserByID(user.getID());
         assert user2.equals(user);
@@ -59,7 +55,6 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         User user2 = userRepository.getUserByUsername(user.getUsername());
         assert user2.equals(user);
@@ -81,7 +76,7 @@ class UserRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
+        user.setPhoneNumber("123456789");
         userRepository.createUser(user);
         User user2 = userRepository.getUserByPhoneNumber(user.getPhoneNumber());
         assert user2.equals(user);

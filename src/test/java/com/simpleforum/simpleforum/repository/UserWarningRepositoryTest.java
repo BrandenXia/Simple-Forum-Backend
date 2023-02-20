@@ -24,7 +24,6 @@ class UserWarningRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
@@ -41,7 +40,6 @@ class UserWarningRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
@@ -59,7 +57,6 @@ class UserWarningRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
@@ -76,7 +73,6 @@ class UserWarningRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
@@ -93,7 +89,6 @@ class UserWarningRepositoryTest {
         User user = new User();
         user.setUsername("test");
         user.setPassword("test");
-        user.setEmail("test@test.com");
         userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
