@@ -1,10 +1,10 @@
 package com.simpleforum.simpleforum.controller.rest;
 
-import com.auth0.jwt.interfaces.Claim;
 import com.simpleforum.simpleforum.dto.UserDTO;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.service.UserService;
 import com.simpleforum.simpleforum.util.JwtUtils;
+import com.simpleforum.simpleforum.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,48 +18,78 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Map<String, Object> register(@RequestBody UserDTO registerUser) {
+    public ResponseUtils.Response register(@RequestBody UserDTO registerUser) {
         if (registerUser.getUsername() == null || registerUser.getPassword() == null) {
-            return Map.of("status", "error", "message", "register failed: invalid username or password");
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid username or password");
         }
         User user = userService.register(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail(), registerUser.getPhoneNumber());
         if (user == null) {
-            return Map.of("status", "error", "message", "register failed: username or email already exists");
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("username or email already exists");
         }
-        return Map.of("status", "ok", "message", "register success");
+        return ResponseUtils.createResponse()
+                .success()
+                .setCode(200)
+                .setMessage("register success")
+                .setData(user);
     }
 
     @PostMapping("/login/username")
-    public Map<String, Object> loginWithUsername(@RequestBody UserDTO user) {
+    public ResponseUtils.Response loginWithUsername(@RequestBody UserDTO user) {
         if (!userService.loginWithUsername(user.getUsername(), user.getPassword())) {
-            return Map.of("status", "error", "message", "invalid username or password");
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid username or password");
         }
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
         payload.put("time", String.valueOf(System.currentTimeMillis()));
         String token = JwtUtils.getToken(payload);
-        return Map.of("status", "ok", "message", "loginWithUsername success", "token", token);
+        return ResponseUtils.createResponse()
+                .success()
+                .setCode(200)
+                .setMessage("loginWithUsername success")
+                .setData(Map.of("token", token));
     }
 
     @PostMapping("/login/email")
-    public Map<String, Object> loginEmail(@RequestBody UserDTO user) {
+    public ResponseUtils.Response loginEmail(@RequestBody UserDTO user) {
         if (!userService.loginWithEmail(user.getEmail(), user.getPassword())) {
-            return Map.of("status", "error", "message", "invalid email or password");
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid email or password");
         }
         Map<String, String> payload = new HashMap<>();
         payload.put("email", user.getUsername());
         payload.put("time", String.valueOf(System.currentTimeMillis()));
         String token = JwtUtils.getToken(payload);
-        return Map.of("status", "ok", "message", "loginWithUsername success", "token", token);
+        return ResponseUtils.createResponse()
+                .success()
+                .setCode(200)
+                .setMessage("loginWithEmail success")
+                .setData(Map.of("token", token));
     }
 
-    @PostMapping("/current")
-    public Map<String, Object> current(@RequestHeader("token") String token) {
-        Map<String, Claim> payload = JwtUtils.getPayload(token);
-        if (payload == null) {
-            return Map.of("status", "error", "message", "invalid token");
+    @GetMapping("/current")
+    public ResponseUtils.Response current(@RequestHeader("token") String token) {
+        User user = userService.getCurrentUser(token);
+        if (user == null) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid token");
         }
-        String username = payload.get("username").asString();
-        return Map.of("status", "ok", "message", "get current user success", "user", username);
+        return ResponseUtils.createResponse()
+                .success()
+                .setCode(200)
+                .setMessage("get current user success")
+                .setData(Map.of("username", user.getUsername()));
     }
 }
