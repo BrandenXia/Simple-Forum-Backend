@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.dao;
+package com.simpleforum.simpleforum.repository;
 
-import com.simpleforum.simpleforum.domain.User;
+import com.simpleforum.simpleforum.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface UserDao {
+public interface UserRepository {
     /**
      * Create a new user, return the user if success, return null if fail
      *

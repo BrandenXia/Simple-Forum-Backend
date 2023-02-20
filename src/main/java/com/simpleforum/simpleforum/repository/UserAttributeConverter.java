@@ -1,4 +1,4 @@
-package com.simpleforum.simpleforum.dao;
+package com.simpleforum.simpleforum.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -22,7 +22,7 @@ public class UserAttributeConverter implements AttributeConverter<Map<String, Ob
         try {
             result = objectMapper.writeValueAsString(attribute);
         } catch (final JsonProcessingException e) {
-            logger.error("JSON writing error: {}", e.getMessage());
+            logger.debug("JSON writing error: {}", e.getMessage());
         }
 
         return result;
@@ -37,7 +37,7 @@ public class UserAttributeConverter implements AttributeConverter<Map<String, Ob
             result = objectMapper.readValue(userAttributeJSON, new TypeReference<HashMap<String, Object>>() {
             });
         } catch (final JsonProcessingException e) {
-            logger.error("JSON reading error: {}", e.getMessage());
+            logger.debug("JSON reading error: {}", e.getMessage());
         }
         return result;
     }

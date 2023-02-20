@@ -1,12 +1,12 @@
-package com.simpleforum.simpleforum.dao;
+package com.simpleforum.simpleforum.repository;
 
-import com.simpleforum.simpleforum.domain.User;
-import com.simpleforum.simpleforum.domain.UserWarning;
+import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.entity.UserWarning;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface UserWarningDao {
+public interface UserWarningRepository {
     /**
      * Create user warning
      *

@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.dao.impl;
+package com.simpleforum.simpleforum.repository.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
-import com.simpleforum.simpleforum.dao.UserDao;
-import com.simpleforum.simpleforum.domain.User;
-import com.simpleforum.simpleforum.domain.UserWarning;
+import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.entity.UserWarning;
+import com.simpleforum.simpleforum.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
-        logger.info("User created: {}", user);
+        logger.debug("User created: {}", user);
         return user;
     }
 
@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     public void deleteUser(User user) {
         this.entityManager.remove(user);
-        logger.info("User deleted: {}", user);
+        logger.debug("User deleted: {}", user);
     }
 
     @Override
@@ -55,59 +55,59 @@ public class UserDaoImpl implements UserDao {
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         this.entityManager.merge(user);
-        logger.info("User updated: {}", user);
+        logger.debug("User updated: {}", user);
     }
 
     @Override
     public User getUserByID(String id) {
         User user = this.entityManager.find(User.class, id);
         if (user != null) {
-            logger.info("User found: {}", user);
+            logger.debug("User found: {}", user);
             return user;
         } else {
-            logger.error("User not found: {}", id);
+            logger.debug("User not found: {}", id);
             return null;
         }
     }
 
     @Override
     public User getUserByUsername(String username) {
-        User user = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
-                .setParameter("username", username)
-                .getSingleResult();
-        if (user != null) {
-            logger.info("User found: {}", user);
+        try {
+            User user = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getSingleResult();
+            logger.debug("User found: {}", user);
             return user;
-        } else {
-            logger.error("User not found: {}", username);
+        } catch (Exception e) {
+            logger.debug("User not found: {}", username);
             return null;
         }
     }
 
     @Override
     public User getUserByEmail(String email) {
-        User user = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
-                .setParameter("email", email)
-                .getSingleResult();
-        if (user != null) {
-            logger.info("User found: {}", user);
+        try {
+            User user = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            logger.debug("User found: {}", user);
             return user;
-        } else {
-            logger.error("User not found: {}", email);
+        } catch (Exception e) {
+            logger.debug("User not found: {}", email);
             return null;
         }
     }
 
     @Override
     public User getUserByPhoneNumber(String phoneNumber) {
-        User user = entityManager.createQuery("SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber", User.class)
-                .setParameter("phoneNumber", phoneNumber)
-                .getSingleResult();
-        if (user != null) {
-            logger.info("User found: {}", user);
+        try {
+            User user = entityManager.createQuery("SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber", User.class)
+                    .setParameter("phoneNumber", phoneNumber)
+                    .getSingleResult();
+            logger.debug("User found: {}", user);
             return user;
-        } else {
-            logger.error("User not found: {}", phoneNumber);
+        } catch (Exception e) {
+            logger.debug("User not found: {}", phoneNumber);
             return null;
         }
     }

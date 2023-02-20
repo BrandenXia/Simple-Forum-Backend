@@ -1,9 +1,9 @@
-package com.simpleforum.simpleforum.domain;
+package com.simpleforum.simpleforum.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simpleforum.simpleforum.dao.UserAttributeConverter;
+import com.simpleforum.simpleforum.repository.UserAttributeConverter;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

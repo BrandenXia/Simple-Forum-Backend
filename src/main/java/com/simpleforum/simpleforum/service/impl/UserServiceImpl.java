@@ -1,7 +1,7 @@
 package com.simpleforum.simpleforum.service.impl;
 
-import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
