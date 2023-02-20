@@ -28,4 +28,11 @@ public interface UserService {
      * @return success or not
      */
     Boolean loginWithEmail(String email, String password);
+
+    /**
+     * Get a user by username
+     * @param token token
+     * @return the user or null
+     */
+    User getCurrentUser(String token);
 }

@@ -1,10 +1,14 @@
 package com.simpleforum.simpleforum.service.impl;
 
+import com.auth0.jwt.interfaces.Claim;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.service.UserService;
+import com.simpleforum.simpleforum.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,5 +44,18 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return user.getPassword().equals(password);
+    }
+
+    @Override
+    public User getCurrentUser(String token) {
+        Map<String, Claim> payload = JwtUtils.getPayload(token);
+        if (payload == null) {
+            return null;
+        }
+        String username = payload.get("username").asString();
+        if (username == null) {
+            return null;
+        }
+        return userRepository.getUserByUsername(username);
     }
 }
