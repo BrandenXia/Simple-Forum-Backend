@@ -1,23 +1,15 @@
 package com.simpleforum.simpleforum.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+@Data
 public class UserDTO {
-    @Getter
-    @Setter
     private String username;
 
-    @Getter
-    @Setter
     private String password;
 
-    @Getter
-    @Setter
     private String email;
 
-    @Getter
-    @Setter
     private String phoneNumber;
 
     public UserDTO() {
