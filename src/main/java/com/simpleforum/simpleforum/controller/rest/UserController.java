@@ -14,8 +14,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public ResponseUtils.Response register(@RequestBody UserDTO registerUser) {

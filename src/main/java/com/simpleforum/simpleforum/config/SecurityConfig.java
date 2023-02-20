@@ -8,8 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SecurityConfig implements WebMvcConfigurer {
+    private final JwtInterceptor jwtInterceptor;
+
     @Autowired
-    private JwtInterceptor jwtInterceptor;
+    public SecurityConfig(JwtInterceptor jwtInterceptor) {
+        this.jwtInterceptor = jwtInterceptor;
+    }
 
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
