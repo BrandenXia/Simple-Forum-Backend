@@ -21,33 +21,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(String username, String password, String email, String phoneNumber) {
-        if (userRepository.getUserByUsername(username) != null) {
+        if (userRepository.isUserExistsByUsername(username)) {
             return null;
-        } else if (userRepository.getUserByEmail(email) != null) {
+        } else if (userRepository.isUserExistsByEmail(email)) {
             return null;
-        } else if (userRepository.getUserByPhoneNumber(phoneNumber) != null) {
+        } else if (userRepository.isUserExistsByPhoneNumber(phoneNumber)) {
             return null;
         } else {
-            return userRepository.createUser(username, password, email, phoneNumber);
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
+            user.setPhoneNumber(phoneNumber);
+            userRepository.createUser(user);
+            return user;
         }
     }
 
     @Override
     public Boolean loginWithUsername(String username, String password) {
-        User user = userRepository.getUserByUsername(username);
-        if (user == null) {
+        try {
+            User user = userRepository.getUserByUsername(username);
+            return user.getPassword().equals(password);
+        } catch (Exception e) {
             return false;
         }
-        return user.getPassword().equals(password);
     }
 
     @Override
     public Boolean loginWithEmail(String email, String password) {
-        User user = userRepository.getUserByEmail(email);
-        if (user == null) {
+        try {
+            User user = userRepository.getUserByEmail(email);
+            return user.getPassword().equals(password);
+        } catch (Exception e) {
             return false;
         }
-        return user.getPassword().equals(password);
     }
 
     @Override
@@ -60,6 +68,10 @@ public class UserServiceImpl implements UserService {
         if (username == null) {
             return null;
         }
-        return userRepository.getUserByUsername(username);
+        if (userRepository.isUserExistsByUsername(username)) {
+            return userRepository.getUserByUsername(username);
+        } else {
+            return null;
+        }
     }
 }

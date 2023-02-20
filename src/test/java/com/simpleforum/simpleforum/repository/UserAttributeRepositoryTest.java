@@ -21,7 +21,11 @@ class UserAttributeRepositoryTest {
 
     @Test
     void setUserAttribute() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserAttribute userAttribute = new UserAttribute();
         userAttribute.setUser(user);
         Map<String, Object> attribute = new HashMap<>();

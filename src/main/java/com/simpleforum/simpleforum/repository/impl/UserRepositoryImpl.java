@@ -3,6 +3,7 @@ package com.simpleforum.simpleforum.repository.impl;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.entity.UserWarning;
+import com.simpleforum.simpleforum.exception.DAOException;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,20 +25,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public User createUser(String username, String password, String email, String phoneNumber) {
-        User user = new User();
+    public void createUser(User user) {
         user.setID(NanoIdUtils.randomNanoId());
-        user.setUsername(username);
-        user.setPassword(password);
         List<UserWarning> userWarnings = new ArrayList<>();
         user.setUserWarnings(userWarnings);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
         logger.debug("User created: {}", user);
-        return user;
     }
 
     @Override
@@ -59,19 +54,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserByID(String id) {
+    public User getUserByID(String id) throws DAOException {
         User user = this.entityManager.find(User.class, id);
         if (user != null) {
             logger.debug("User found: {}", user);
             return user;
         } else {
-            logger.debug("User not found: {}", id);
-            return null;
+            throw new DAOException("User not found: " + id);
         }
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User getUserByUsername(String username) throws DAOException {
         try {
             User user = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                     .setParameter("username", username)
@@ -79,13 +73,12 @@ public class UserRepositoryImpl implements UserRepository {
             logger.debug("User found: {}", user);
             return user;
         } catch (Exception e) {
-            logger.debug("User not found: {}", username);
-            return null;
+            throw new DAOException("User not found: " + username);
         }
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(String email) throws DAOException {
         try {
             User user = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email)
@@ -93,13 +86,12 @@ public class UserRepositoryImpl implements UserRepository {
             logger.debug("User found: {}", user);
             return user;
         } catch (Exception e) {
-            logger.debug("User not found: {}", email);
-            return null;
+            throw new DAOException("User not found: " + email);
         }
     }
 
     @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
+    public User getUserByPhoneNumber(String phoneNumber) throws DAOException {
         try {
             User user = entityManager.createQuery("SELECT u FROM User u WHERE u.phoneNumber = :phoneNumber", User.class)
                     .setParameter("phoneNumber", phoneNumber)
@@ -107,8 +99,36 @@ public class UserRepositoryImpl implements UserRepository {
             logger.debug("User found: {}", user);
             return user;
         } catch (Exception e) {
-            logger.debug("User not found: {}", phoneNumber);
-            return null;
+            throw new DAOException("User not found: " + phoneNumber);
         }
+    }
+
+    @Override
+    public boolean isUserExistsByID(String id) {
+        return entityManager.createQuery("SELECT count(e) FROM User e WHERE e.id = :id", Long.class)
+                .setParameter("id", id)
+                .getSingleResult() > 0;
+    }
+
+
+    @Override
+    public boolean isUserExistsByUsername(String username) {
+        return entityManager.createQuery("SELECT count(e) FROM User e WHERE e.username = :username", Long.class)
+                .setParameter("username", username)
+                .getSingleResult() > 0;
+    }
+
+    @Override
+    public boolean isUserExistsByEmail(String email) {
+        return entityManager.createQuery("SELECT count(e) FROM User e WHERE e.email = :email", Long.class)
+                .setParameter("email", email)
+                .getSingleResult() > 0;
+    }
+
+    @Override
+    public boolean isUserExistsByPhoneNumber(String phoneNumber) {
+        return entityManager.createQuery("SELECT count(e) FROM User e WHERE e.phoneNumber = :phoneNumber", Long.class)
+                .setParameter("phoneNumber", phoneNumber)
+                .getSingleResult() > 0;
     }
 }

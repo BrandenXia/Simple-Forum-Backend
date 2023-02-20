@@ -21,7 +21,11 @@ class UserWarningRepositoryTest {
 
     @Test
     void addUserWarning() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
         userWarning.setReason("test");
@@ -34,7 +38,11 @@ class UserWarningRepositoryTest {
 
     @Test
     void deleteUserWarning() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
         userWarning.setReason("test");
@@ -48,7 +56,11 @@ class UserWarningRepositoryTest {
 
     @Test
     void getUserWarningById() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
         userWarning.setReason("test");
@@ -61,7 +73,11 @@ class UserWarningRepositoryTest {
 
     @Test
     void getUserWarningByUser() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
         userWarning.setReason("test");
@@ -74,7 +90,11 @@ class UserWarningRepositoryTest {
 
     @Test
     void GetUserWarningByUser() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         UserWarning userWarning = new UserWarning();
         userWarning.setUser(user);
         userWarning.setReason("test");

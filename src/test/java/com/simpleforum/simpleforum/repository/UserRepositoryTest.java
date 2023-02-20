@@ -14,48 +14,75 @@ class UserRepositoryTest {
 
     @Test
     void createUser() {
-        userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         assert userRepository.getUserByUsername("test") != null;
     }
 
     @Test
     void deleteUser() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
-        userRepository.deleteUser(user);
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         assert userRepository.getUserByID(user.getID()) == null;
     }
 
     @Test
     void updateUser() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         userRepository.updateUser(user, "test2", "test2", "test2@test.com", "987654321");
         assert userRepository.getUserByID(user.getID()).getUsername().equals("test2");
     }
 
     @Test
     void getUserByID() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         User user2 = userRepository.getUserByID(user.getID());
         assert user2.equals(user);
     }
 
     @Test
     void getUserByUsername() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         User user2 = userRepository.getUserByUsername(user.getUsername());
         assert user2.equals(user);
     }
 
     @Test
     void getUserByEmail() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         User user2 = userRepository.getUserByEmail(user.getEmail());
         assert user2.equals(user);
     }
 
     @Test
     void getUserByPhoneNumber() {
-        User user = userRepository.createUser("test", "test", "test@test.com", "123456789");
+        User user = new User();
+        user.setUsername("test");
+        user.setPassword("test");
+        user.setEmail("test@test.com");
+        userRepository.createUser(user);
         User user2 = userRepository.getUserByPhoneNumber(user.getPhoneNumber());
         assert user2.equals(user);
     }
