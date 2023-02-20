@@ -21,9 +21,9 @@ public class JwtUtils {
         claims.forEach(builder::withClaim);
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.HOUR, EXPIRATION_HOURS);
-        builder.withExpiresAt(instance.getTime());
-        builder.withIssuer(ISSUER);
-        return builder.sign(Algorithm.HMAC256(SECRET));
+        return builder.withExpiresAt(instance.getTime())
+                .withIssuer(ISSUER)
+                .sign(Algorithm.HMAC256(SECRET));
     }
 
     public static void verify(String token) {
