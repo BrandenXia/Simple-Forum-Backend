@@ -14,6 +14,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/user/*")
-                .excludePathPatterns("/user/login", "/user/register");
+                .excludePathPatterns("/user/loginWithUsername", "/user/register");
     }
 }

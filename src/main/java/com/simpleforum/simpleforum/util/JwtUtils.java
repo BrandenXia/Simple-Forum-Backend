@@ -1,4 +1,4 @@
-package com.simpleforum.simpleforum.utils;
+package com.simpleforum.simpleforum.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;

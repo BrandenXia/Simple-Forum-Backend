@@ -19,13 +19,23 @@ public class UserServiceImpl implements UserService {
             return null;
         } else if (userRepository.getUserByPhoneNumber(phoneNumber) != null) {
             return null;
+        } else {
+            return userRepository.createUser(username, password, email, phoneNumber);
         }
-        return userRepository.createUser(username, password, email, phoneNumber);
     }
 
     @Override
-    public Boolean login(String username, String password) {
+    public Boolean loginWithUsername(String username, String password) {
         User user = userRepository.getUserByUsername(username);
+        if (user == null) {
+            return false;
+        }
+        return user.getPassword().equals(password);
+    }
+
+    @Override
+    public Boolean loginWithEmail(String email, String password) {
+        User user = userRepository.getUserByEmail(email);
         if (user == null) {
             return false;
         }

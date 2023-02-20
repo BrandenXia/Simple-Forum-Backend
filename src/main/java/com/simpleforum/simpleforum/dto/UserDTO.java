@@ -3,7 +3,7 @@ package com.simpleforum.simpleforum.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-public class RegisterUser {
+public class UserDTO {
     @Getter
     @Setter
     private String username;
@@ -20,10 +20,10 @@ public class RegisterUser {
     @Setter
     private String phoneNumber;
 
-    public RegisterUser() {
+    public UserDTO() {
     }
 
-    public RegisterUser(String username, String password, String email, String phoneNumber) {
+    public UserDTO(String username, String password, String email, String phoneNumber) {
         this.username = username;
         this.password = password;
         this.email = email;

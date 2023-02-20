@@ -19,5 +19,13 @@ public interface UserService {
      * @param password password
      * @return success or not
      */
-    Boolean login(String username, String password);
+    Boolean loginWithUsername(String username, String password);
+
+    /**
+     * Login a user
+     * @param email email
+     * @param password password
+     * @return success or not
+     */
+    Boolean loginWithEmail(String email, String password);
 }
