@@ -40,6 +40,15 @@ public interface UserService {
     Boolean loginWithEmail(String email, String password);
 
     /**
+     * Update a user
+     *
+     * @param currentUser current user
+     * @param updateUser  update user
+     * @return success or not
+     */
+    Boolean updateUser(User currentUser, UserDTO updateUser);
+
+    /**
      * Get a user by username
      * @param token token
      * @return the user or null

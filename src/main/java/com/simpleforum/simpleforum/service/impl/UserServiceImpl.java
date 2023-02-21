@@ -81,6 +81,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean updateUser(User currentUser, UserDTO updateUser) {
+        if (updateUser.getUsername() != null) {
+            currentUser.setUsername(updateUser.getUsername());
+        }
+        if (updateUser.getPassword() != null) {
+            currentUser.setPassword(updateUser.getPassword());
+        }
+        if (updateUser.getEmail() != null) {
+            currentUser.setEmail(updateUser.getEmail());
+        }
+        if (updateUser.getPhoneNumber() != null) {
+            currentUser.setPhoneNumber(updateUser.getPhoneNumber());
+        }
+        userRepository.updateUser(currentUser);
+        return true;
+    }
+
+    @Override
     public User getCurrentUser(String token) {
         Map<String, Claim> payload = JwtUtils.getPayload(token);
         if (payload == null) {
