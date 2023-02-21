@@ -42,6 +42,7 @@ public class UserController {
                 .setMessage("register success")
                 .setData(user);
     }
+
     @PostMapping("/login/{loginType}")
     public ResponseUtils.Response login(@PathVariable String loginType, @RequestBody UserDTO user) {
         try {

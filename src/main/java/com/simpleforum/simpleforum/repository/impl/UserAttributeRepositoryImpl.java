@@ -11,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class UserAttributeRepositoryImpl implements UserAttributeRepository {
+    final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
     @PersistenceContext
     private EntityManager entityManager;
-
-    final Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
     @Override
     @Transactional

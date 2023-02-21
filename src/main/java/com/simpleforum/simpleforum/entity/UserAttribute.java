@@ -14,18 +14,18 @@ import java.util.Map;
 @Table(name = "user_attributes")
 @Data
 public class UserAttribute {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     @Id
     @JoinColumn(name = "user_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
-
     @Transient
     private String UserAttributeJSON;
-
     @Convert(converter = UserAttributeConverter.class)
     private Map<String, Object> attributes;
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public UserAttribute() {
+    }
 
     public void serializeAttributes() throws JsonProcessingException {
         this.UserAttributeJSON = objectMapper.writeValueAsString(this.attributes);
@@ -34,8 +34,5 @@ public class UserAttribute {
     public void deserializeAttributes() throws IOException {
         this.attributes = objectMapper.readValue(this.UserAttributeJSON, new TypeReference<>() {
         });
-    }
-
-    public UserAttribute() {
     }
 }

@@ -6,9 +6,10 @@ import com.simpleforum.simpleforum.entity.User;
 public interface UserService {
     /**
      * Register a new user
-     * @param username username
-     * @param password password
-     * @param email email
+     *
+     * @param username    username
+     * @param password    password
+     * @param email       email
      * @param phoneNumber phone number
      * @return the new user
      */
@@ -17,7 +18,7 @@ public interface UserService {
     /**
      * Login a user
      *
-     * @param user user
+     * @param user      user
      * @param loginType login type
      * @return success or not
      */
@@ -25,6 +26,7 @@ public interface UserService {
 
     /**
      * Login a user
+     *
      * @param username username
      * @param password password
      * @return success or not
@@ -33,7 +35,8 @@ public interface UserService {
 
     /**
      * Login a user
-     * @param email email
+     *
+     * @param email    email
      * @param password password
      * @return success or not
      */
@@ -50,6 +53,7 @@ public interface UserService {
 
     /**
      * Get a user by username
+     *
      * @param token token
      * @return the user or null
      */

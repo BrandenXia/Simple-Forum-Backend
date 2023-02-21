@@ -33,8 +33,8 @@ public interface UserRepository {
      * Get a user by id, return the user if success, return null if fail
      *
      * @param id id
-     * @throws DAOException DAOException
      * @return User
+     * @throws DAOException DAOException
      */
     User getUserByID(String id) throws DAOException;
 
@@ -42,8 +42,8 @@ public interface UserRepository {
      * Get a user by username, return the user if success, return null if fail
      *
      * @param username username
-     * @throws DAOException DAOException
      * @return User
+     * @throws DAOException DAOException
      */
     User getUserByUsername(String username) throws DAOException;
 
@@ -51,8 +51,8 @@ public interface UserRepository {
      * Get a user by email, return the user if success, return null if fail
      *
      * @param email email
-     * @throws DAOException DAOException
      * @return User
+     * @throws DAOException DAOException
      */
     User getUserByEmail(String email) throws DAOException;
 
@@ -60,8 +60,8 @@ public interface UserRepository {
      * Get a user by phone number, return the user if success, return null if fail
      *
      * @param phoneNumber phone number
-     * @throws DAOException DAOException
      * @return User
+     * @throws DAOException DAOException
      */
     User getUserByPhoneNumber(String phoneNumber) throws DAOException;
 

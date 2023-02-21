@@ -29,15 +29,14 @@ public class UserServiceImpl implements UserService {
             return null;
         } else if (userRepository.isUserExistsByPhoneNumber(phoneNumber)) {
             return null;
-        } else {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setEmail(email);
-            user.setPhoneNumber(phoneNumber);
-            userRepository.createUser(user);
-            return user;
         }
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        userRepository.createUser(user);
+        return user;
     }
 
     @Override
@@ -56,9 +55,8 @@ public class UserServiceImpl implements UserService {
                 user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
                 userRepository.updateUser(user);
                 return true;
-            } else {
-                return false;
             }
+            return false;
         } catch (Exception e) {
             return false;
         }
@@ -72,9 +70,8 @@ public class UserServiceImpl implements UserService {
                 user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
                 userRepository.updateUser(user);
                 return true;
-            } else {
-                return false;
             }
+            return false;
         } catch (Exception e) {
             return false;
         }
@@ -110,8 +107,7 @@ public class UserServiceImpl implements UserService {
         }
         if (userRepository.isUserExistsByUsername(username)) {
             return userRepository.getUserByUsername(username);
-        } else {
-            return null;
         }
+        return null;
     }
 }

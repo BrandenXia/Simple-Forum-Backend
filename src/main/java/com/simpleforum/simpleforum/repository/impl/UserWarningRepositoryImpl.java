@@ -15,10 +15,9 @@ import java.util.List;
 
 @Repository
 public class UserWarningRepositoryImpl implements UserWarningRepository {
+    final Logger logger = LoggerFactory.getLogger(getClass());
     @PersistenceContext
     private EntityManager entityManager;
-
-    final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     @Transactional
@@ -41,10 +40,9 @@ public class UserWarningRepositoryImpl implements UserWarningRepository {
         if (userWarning != null) {
             logger.debug("User warning found: " + userWarning);
             return userWarning;
-        } else {
-            logger.debug("User warning not found");
-            throw new DAOException("User warning not found");
         }
+        logger.debug("User warning not found");
+        throw new DAOException("User warning not found");
     }
 
     @Override

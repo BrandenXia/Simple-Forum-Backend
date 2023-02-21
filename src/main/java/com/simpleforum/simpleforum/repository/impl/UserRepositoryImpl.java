@@ -18,10 +18,9 @@ import java.util.List;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
+    final Logger logger = LoggerFactory.getLogger(getClass());
     @PersistenceContext
     private EntityManager entityManager;
-
-    final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     @Transactional
@@ -55,9 +54,8 @@ public class UserRepositoryImpl implements UserRepository {
         if (user != null) {
             logger.debug("User found: {}", user);
             return user;
-        } else {
-            throw new DAOException("User not found: " + id);
         }
+        throw new DAOException("User not found: " + id);
     }
 
     @Override

@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserAttributeConverter implements AttributeConverter<Map<String, Object>, String> {
-    private final ObjectMapper objectMapper = new ObjectMapper();
     final Logger logger = LoggerFactory.getLogger(getClass());
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Convert Map<String, Object> to String
     @Override
