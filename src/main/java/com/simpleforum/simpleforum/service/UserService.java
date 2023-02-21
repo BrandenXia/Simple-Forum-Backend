@@ -1,5 +1,6 @@
 package com.simpleforum.simpleforum.service;
 
+import com.simpleforum.simpleforum.dto.UserDTO;
 import com.simpleforum.simpleforum.entity.User;
 
 public interface UserService {
@@ -12,6 +13,15 @@ public interface UserService {
      * @return the new user
      */
     User register(String username, String password, String email, String phoneNumber);
+
+    /**
+     * Login a user
+     *
+     * @param user user
+     * @param loginType login type
+     * @return success or not
+     */
+    Boolean login(UserDTO user, String loginType) throws Exception;
 
     /**
      * Login a user

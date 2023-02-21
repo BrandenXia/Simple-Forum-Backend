@@ -1,6 +1,7 @@
 package com.simpleforum.simpleforum.service.impl;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.simpleforum.simpleforum.dto.UserDTO;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.service.UserService;
@@ -36,6 +37,14 @@ public class UserServiceImpl implements UserService {
             userRepository.createUser(user);
             return user;
         }
+    }
+
+    @Override
+    public Boolean login(UserDTO user, String loginType) throws Exception {
+        String loginMethod = "loginWith" + loginType.substring(0, 1).toUpperCase() + loginType.substring(1);
+        String getMethod = "get" + loginType.substring(0, 1).toUpperCase() + loginType.substring(1);
+        String userInfo = (String) user.getClass().getMethod(getMethod).invoke(user);
+        return (Boolean) getClass().getMethod(loginMethod, String.class, String.class).invoke(this, userInfo, user.getPassword());
     }
 
     @Override
