@@ -36,7 +36,9 @@ class UserRepositoryTest {
         user.setUsername("test");
         user.setPassword("test");
         userRepository.createUser(user);
-        userRepository.updateUser(user, "test2", "test2", "test2@test.com", "987654321");
+        user.setUsername("user");
+        user.setPassword("114514");
+        userRepository.updateUser(user);
         assert userRepository.getUserByID(user.getID()).getUsername().equals("test2");
     }
 

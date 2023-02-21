@@ -44,11 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void updateUser(User user, String username, String password, String email, String phoneNumber) {
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setEmail(email);
-        user.setPhoneNumber(phoneNumber);
+    public void updateUser(User user) {
         this.entityManager.merge(user);
         logger.debug("User updated: {}", user);
     }

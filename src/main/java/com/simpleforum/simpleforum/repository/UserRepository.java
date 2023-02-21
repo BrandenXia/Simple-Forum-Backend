@@ -24,14 +24,10 @@ public interface UserRepository {
     /**
      * Update a user, return true if success, return false if fail
      *
-     * @param user        user
-     * @param username    username
-     * @param password    password
-     * @param email       email
-     * @param phoneNumber phone number
+     * @param user user
      */
     @Transactional
-    void updateUser(User user, String username, String password, String email, String phoneNumber);
+    void updateUser(User user);
 
     /**
      * Get a user by id, return the user if success, return null if fail
