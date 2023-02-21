@@ -2,6 +2,7 @@ package com.simpleforum.simpleforum.repository;
 
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.entity.UserWarning;
+import com.simpleforum.simpleforum.exception.DAOException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface UserWarningRepository {
      * @param id id
      * @return user warning
      */
-    UserWarning getUserWarningById(String id);
+    UserWarning getUserWarningById(String id) throws DAOException;
 
     /**
      * Get user warning by user
@@ -40,7 +41,7 @@ public interface UserWarningRepository {
      * @param limit limit
      * @return user warning
      */
-    List<UserWarning> getUserWarningByUser(User user, Integer limit);
+    List<UserWarning> getUserWarningByUser(User user, Integer limit) throws DAOException;
 
-    List<UserWarning> getUserWarningByUser(User user);
+    List<UserWarning> getUserWarningByUser(User user) throws DAOException;
 }

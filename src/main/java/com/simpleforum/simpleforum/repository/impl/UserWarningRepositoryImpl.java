@@ -2,6 +2,7 @@ package com.simpleforum.simpleforum.repository.impl;
 
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.entity.UserWarning;
+import com.simpleforum.simpleforum.exception.DAOException;
 import com.simpleforum.simpleforum.repository.UserWarningRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -34,25 +35,46 @@ public class UserWarningRepositoryImpl implements UserWarningRepository {
     }
 
     @Override
-    public UserWarning getUserWarningById(String id) {
+    public UserWarning getUserWarningById(String id) throws DAOException {
         logger.debug("Getting user warning by id " + id);
-        return entityManager.find(UserWarning.class, id);
+        UserWarning userWarning = entityManager.find(UserWarning.class, id);
+        if (userWarning != null) {
+            logger.debug("User warning found: " + userWarning);
+            return userWarning;
+        } else {
+            logger.debug("User warning not found");
+            throw new DAOException("User warning not found");
+        }
     }
 
     @Override
-    public List<UserWarning> getUserWarningByUser(User user, Integer limit) {
+    public List<UserWarning> getUserWarningByUser(User user, Integer limit) throws DAOException {
         logger.debug("Getting user warning by user " + user.getUsername());
-        return entityManager.createQuery("SELECT uw FROM UserWarning uw WHERE uw.user = :user", UserWarning.class)
-                .setParameter("user", user)
-                .setMaxResults(limit)
-                .getResultList();
+        try {
+            List<UserWarning> userWarnings = entityManager.createQuery("SELECT uw FROM UserWarning uw WHERE uw.user = :user", UserWarning.class)
+                    .setParameter("user", user)
+                    .setMaxResults(limit)
+                    .getResultList();
+            logger.debug("User warnings found: " + userWarnings);
+            return userWarnings;
+        } catch (Exception e) {
+            logger.debug("User warning not found");
+            throw new DAOException("User warning not found");
+        }
     }
 
     @Override
-    public List<UserWarning> getUserWarningByUser(User user) {
+    public List<UserWarning> getUserWarningByUser(User user) throws DAOException {
         logger.debug("Getting user warning by user " + user.getUsername());
-        return entityManager.createQuery("SELECT uw FROM UserWarning uw WHERE uw.user = :user", UserWarning.class)
-                .setParameter("user", user)
-                .getResultList();
+        try {
+            List<UserWarning> userWarnings = entityManager.createQuery("SELECT uw FROM UserWarning uw WHERE uw.user = :user", UserWarning.class)
+                    .setParameter("user", user)
+                    .getResultList();
+            logger.debug("User warnings found: " + userWarnings);
+            return userWarnings;
+        } catch (Exception e) {
+            logger.debug("User warning not found");
+            throw new DAOException("User warning not found");
+        }
     }
 }
