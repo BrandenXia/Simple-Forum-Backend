@@ -69,6 +69,33 @@ public class UserController {
                 .setData(Map.of("token", token));
     }
 
+    @PostMapping("/update")
+    public ResponseUtils.Response update(@RequestHeader("token") String token, @RequestBody UserDTO user) {
+        User currentUser = userService.getCurrentUser(token);
+        if (currentUser == null) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid token");
+        }
+        if (!user.getPassword().equals(currentUser.getPassword())) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("invalid password");
+        }
+        if (!userService.updateUser(currentUser, user)) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("update failed");
+        }
+        return ResponseUtils.createResponse()
+                .success()
+                .setCode(200)
+                .setMessage("update success");
+    }
+
     @GetMapping("/current")
     public ResponseUtils.Response current(@RequestHeader("token") String token) {
         User user = userService.getCurrentUser(token);
