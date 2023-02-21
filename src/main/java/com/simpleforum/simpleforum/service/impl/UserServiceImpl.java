@@ -9,6 +9,7 @@ import com.simpleforum.simpleforum.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 @Service
@@ -51,7 +52,13 @@ public class UserServiceImpl implements UserService {
     public Boolean loginWithUsername(String username, String password) {
         try {
             User user = userRepository.getUserByUsername(username);
-            return user.getPassword().equals(password);
+            if (user.getPassword().equals(password)) {
+                user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
+                userRepository.updateUser(user);
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             return false;
         }
@@ -61,7 +68,13 @@ public class UserServiceImpl implements UserService {
     public Boolean loginWithEmail(String email, String password) {
         try {
             User user = userRepository.getUserByEmail(email);
-            return user.getPassword().equals(password);
+            if (user.getPassword().equals(password)) {
+                user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
+                userRepository.updateUser(user);
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             return false;
         }
