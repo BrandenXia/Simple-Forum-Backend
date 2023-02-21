@@ -42,14 +42,21 @@ public class UserController {
                 .setMessage("register success")
                 .setData(user);
     }
-
-    @PostMapping("/login/username")
-    public ResponseUtils.Response loginWithUsername(@RequestBody UserDTO user) {
-        if (!userService.loginWithUsername(user.getUsername(), user.getPassword())) {
+    @PostMapping("/login/{loginType}")
+    public ResponseUtils.Response login(@PathVariable String loginType, @RequestBody UserDTO user) {
+        try {
+            Boolean result = userService.login(user, loginType);
+            if (!result) {
+                return ResponseUtils.createResponse()
+                        .error()
+                        .setCode(400)
+                        .setMessage("invalid username or password");
+            }
+        } catch (Exception e) {
             return ResponseUtils.createResponse()
                     .error()
                     .setCode(400)
-                    .setMessage("invalid username or password");
+                    .setMessage("Invalid or not allowed login type");
         }
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
@@ -58,26 +65,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("loginWithUsername success")
-                .setData(Map.of("token", token));
-    }
-
-    @PostMapping("/login/email")
-    public ResponseUtils.Response loginEmail(@RequestBody UserDTO user) {
-        if (!userService.loginWithEmail(user.getEmail(), user.getPassword())) {
-            return ResponseUtils.createResponse()
-                    .error()
-                    .setCode(400)
-                    .setMessage("invalid email or password");
-        }
-        Map<String, String> payload = new HashMap<>();
-        payload.put("email", user.getUsername());
-        payload.put("time", String.valueOf(System.currentTimeMillis()));
-        String token = JwtUtils.getToken(payload);
-        return ResponseUtils.createResponse()
-                .success()
-                .setCode(200)
-                .setMessage("loginWithEmail success")
+                .setMessage("login success")
                 .setData(Map.of("token", token));
     }
 
