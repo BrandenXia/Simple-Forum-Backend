@@ -39,8 +39,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("register success")
-                .setData(user);
+                .setMessage("register success");
     }
 
     @PostMapping("/login/{loginType}")
