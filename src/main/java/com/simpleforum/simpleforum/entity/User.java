@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,12 +30,6 @@ public class User {
 
     @Column(nullable = false)
     private Timestamp lastLoginDate;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private UserAttribute userAttribute;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UserWarning> userWarnings;
 
     public User() {
     }

@@ -2,7 +2,6 @@ package com.simpleforum.simpleforum.repository.impl;
 
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.simpleforum.simpleforum.entity.User;
-import com.simpleforum.simpleforum.entity.UserWarning;
 import com.simpleforum.simpleforum.exception.DAOException;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import jakarta.persistence.EntityManager;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -26,8 +23,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public void createUser(User user) {
         user.setID(NanoIdUtils.randomNanoId());
-        List<UserWarning> userWarnings = new ArrayList<>();
-        user.setUserWarnings(userWarnings);
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
