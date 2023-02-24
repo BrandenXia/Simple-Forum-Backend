@@ -21,12 +21,13 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void createUser(User user) {
+    public User createUser(User user) {
         user.setID(NanoIdUtils.randomNanoId());
         user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
         user.setLastLoginDate(new Timestamp(System.currentTimeMillis()));
         this.entityManager.persist(user);
         logger.debug("User created: {}", user);
+        return user;
     }
 
     @Override

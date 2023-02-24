@@ -9,9 +9,10 @@ public interface UserRepository {
      * Create a new user, return the user if success, return null if fail
      *
      * @param user user
+     * @return User
      */
     @Transactional
-    void createUser(User user);
+    User createUser(User user);
 
     /**
      * Delete a user, return true if success, return false if fail

@@ -35,8 +35,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
-        userRepository.createUser(user);
-        return user;
+        return userRepository.createUser(user);
     }
 
     @Override
