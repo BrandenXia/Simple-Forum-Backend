@@ -3,7 +3,7 @@ package com.simpleforum.simpleforum.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -27,10 +27,12 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private Timestamp registrationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date registrationDate;
 
     @Column(nullable = false)
-    private Timestamp lastLoginDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastLoginDate;
 
     @ManyToMany
     @JoinTable(

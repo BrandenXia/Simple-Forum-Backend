@@ -3,7 +3,7 @@ package com.simpleforum.simpleforum.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Entity
 @Table(name = "user_warnings")
@@ -17,7 +17,8 @@ public class UserWarning {
     private String description;
 
     @Column(nullable = false)
-    private Timestamp date;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

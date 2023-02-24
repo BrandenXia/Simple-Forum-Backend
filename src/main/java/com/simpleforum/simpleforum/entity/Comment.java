@@ -3,7 +3,7 @@ package com.simpleforum.simpleforum.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Entity
 @Table(name = "comments")
@@ -17,10 +17,12 @@ public class Comment {
     private String content;
 
     @Column(nullable = false)
-    private Timestamp created_time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created_time;
 
     @Column(nullable = false)
-    private Timestamp updated_time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated_time;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
