@@ -42,21 +42,14 @@ public class UserController {
                 .setMessage("register success");
     }
 
-    @PostMapping("/login/{loginType}")
-    public ResponseUtils.Response login(@PathVariable String loginType, @RequestBody UserDTO user) {
-        try {
-            Boolean result = userService.login(user, loginType);
-            if (!result) {
-                return ResponseUtils.createResponse()
-                        .error()
-                        .setCode(400)
-                        .setMessage("invalid username or password");
-            }
-        } catch (Exception e) {
+    @PostMapping("/login")
+    public ResponseUtils.Response login(@RequestBody UserDTO user) {
+        Boolean result = userService.login(user.getUsername(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
+        if (!result) {
             return ResponseUtils.createResponse()
                     .error()
                     .setCode(400)
-                    .setMessage("Invalid or not allowed login type");
+                    .setMessage("invalid username or password");
         }
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
@@ -84,11 +77,37 @@ public class UserController {
                     .setCode(400)
                     .setMessage("invalid password");
         }
-        if (!userService.updateUser(currentUser, user)) {
+        if (user.getUsername().equals(currentUser.getUsername())) {
             return ResponseUtils.createResponse()
                     .error()
                     .setCode(400)
-                    .setMessage("update failed");
+                    .setMessage("new username cannot be the same as the old one");
+        }
+        if (user.getEmail().equals(currentUser.getEmail())) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("new email cannot be the same as the old one");
+        }
+        if (user.getNewPassword().equals(currentUser.getPassword())) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("new password cannot be the same as the old one");
+        }
+        if (user.getPhoneNumber().equals(currentUser.getPhoneNumber())) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage("new phone number cannot be the same as the old one");
+        }
+        try {
+            userService.updateUser(currentUser, user.getUsername(), user.getNewPassword(), user.getEmail(), user.getPhoneNumber());
+        } catch (Exception e) {
+            return ResponseUtils.createResponse()
+                    .error()
+                    .setCode(400)
+                    .setMessage(e.getMessage());
         }
         return ResponseUtils.createResponse()
                 .success()
