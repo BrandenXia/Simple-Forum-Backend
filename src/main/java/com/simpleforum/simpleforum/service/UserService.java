@@ -1,6 +1,5 @@
 package com.simpleforum.simpleforum.service;
 
-import com.simpleforum.simpleforum.dto.UserDTO;
 import com.simpleforum.simpleforum.entity.User;
 
 public interface UserService {
@@ -18,38 +17,24 @@ public interface UserService {
     /**
      * Login a user
      *
-     * @param user      user
-     * @param loginType login type
-     * @return success or not
-     */
-    Boolean login(UserDTO user, String loginType) throws Exception;
-
-    /**
-     * Login a user
-     *
      * @param username username
      * @param password password
+     * @param email email
+     * @param phoneNumber phone number
      * @return success or not
      */
-    Boolean loginWithUsername(String username, String password);
-
-    /**
-     * Login a user
-     *
-     * @param email    email
-     * @param password password
-     * @return success or not
-     */
-    Boolean loginWithEmail(String email, String password);
+    Boolean login(String username, String password, String email, String phoneNumber);
 
     /**
      * Update a user
      *
      * @param currentUser current user
-     * @param updateUser  update user
-     * @return success or not
+     * @param username    username
+     * @param password    password
+     * @param email       email
+     * @param phoneNumber phone number
      */
-    Boolean updateUser(User currentUser, UserDTO updateUser);
+    void updateUser(User currentUser, String username, String password, String email, String phoneNumber);
 
     /**
      * Get a user by username

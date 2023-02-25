@@ -1,7 +1,7 @@
 package com.simpleforum.simpleforum.service.impl;
 
 import com.auth0.jwt.interfaces.Claim;
-import com.simpleforum.simpleforum.dto.UserDTO;
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.service.UserService;
@@ -23,75 +23,65 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(String username, String password, String email, String phoneNumber) {
-        if (userRepository.isUserExistsByUsername(username)) {
+        if (userRepository.existsByUsername(username)) {
             return null;
-        } else if (userRepository.isUserExistsByEmail(email)) {
+        }
+        if (userRepository.existsByEmail(email)) {
             return null;
-        } else if (userRepository.isUserExistsByPhoneNumber(phoneNumber)) {
+        }
+        if (userRepository.existsByPhoneNumber(phoneNumber)) {
             return null;
         }
         User user = new User();
+        user.setID(NanoIdUtils.randomNanoId());
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
-        return userRepository.createUser(user);
+        user.setRegistrationDate(new Date());
+        user.setLastLoginDate(new Date());
+        userRepository.save(user);
+        return user;
     }
 
     @Override
-    public Boolean login(UserDTO user, String loginType) throws Exception {
-        String loginMethod = "loginWith" + loginType.substring(0, 1).toUpperCase() + loginType.substring(1);
-        String getMethod = "get" + loginType.substring(0, 1).toUpperCase() + loginType.substring(1);
-        String userInfo = (String) user.getClass().getMethod(getMethod).invoke(user);
-        return (Boolean) getClass().getMethod(loginMethod, String.class, String.class).invoke(this, userInfo, user.getPassword());
-    }
-
-    @Override
-    public Boolean loginWithUsername(String username, String password) {
-        try {
-            User user = userRepository.getUserByUsername(username);
-            if (user.getPassword().equals(password)) {
-                user.setLastLoginDate(new Date());
-                userRepository.updateUser(user);
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
+    public Boolean login(String username, String email, String phoneNumber, String password) {
+        User user = userRepository.getByUsernameOrEmailOrPhoneNumber(username, email, phoneNumber);
+        if (user == null) {
             return false;
         }
-    }
-
-    @Override
-    public Boolean loginWithEmail(String email, String password) {
-        try {
-            User user = userRepository.getUserByEmail(email);
-            if (user.getPassword().equals(password)) {
-                user.setLastLoginDate(new Date());
-                userRepository.updateUser(user);
-                return true;
-            }
-            return false;
-        } catch (Exception e) {
+        if (!user.getPassword().equals(password)) {
             return false;
         }
-    }
-
-    @Override
-    public Boolean updateUser(User currentUser, UserDTO updateUser) {
-        if (updateUser.getUsername() != null) {
-            currentUser.setUsername(updateUser.getUsername());
-        }
-        if (updateUser.getNewPassword() != null) {
-            currentUser.setPassword(updateUser.getNewPassword());
-        }
-        if (updateUser.getEmail() != null) {
-            currentUser.setEmail(updateUser.getEmail());
-        }
-        if (updateUser.getPhoneNumber() != null) {
-            currentUser.setPhoneNumber(updateUser.getPhoneNumber());
-        }
-        userRepository.updateUser(currentUser);
+        user.setLastLoginDate(new Date());
+        userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public void updateUser(User currentUser, String username, String password, String email, String phoneNumber) {
+        if (username != null) {
+            if (userRepository.existsByUsername(username)) {
+                throw new RuntimeException("username already exists");
+            }
+            currentUser.setUsername(username);
+        }
+        if (password != null) {
+            currentUser.setPassword(password);
+        }
+        if (email != null) {
+            if (userRepository.existsByEmail(email)) {
+                throw new RuntimeException("email already exists");
+            }
+            currentUser.setEmail(email);
+        }
+        if (phoneNumber != null) {
+            if (userRepository.existsByPhoneNumber(phoneNumber)) {
+                throw new RuntimeException("phone number already exists");
+            }
+            currentUser.setPhoneNumber(phoneNumber);
+        }
+        userRepository.save(currentUser);
     }
 
     @Override
@@ -104,9 +94,6 @@ public class UserServiceImpl implements UserService {
         if (username == null) {
             return null;
         }
-        if (userRepository.isUserExistsByUsername(username)) {
-            return userRepository.getUserByUsername(username);
-        }
-        return null;
+        return userRepository.getByUsername(username);
     }
 }
