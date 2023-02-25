@@ -1,100 +1,25 @@
 package com.simpleforum.simpleforum.repository;
 
 import com.simpleforum.simpleforum.entity.User;
-import com.simpleforum.simpleforum.exception.DAOException;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository {
-    /**
-     * Create a new user, return the user if success, return null if fail
-     *
-     * @param user user
-     * @return User
-     */
-    @Transactional
-    User createUser(User user);
+import java.util.Date;
+import java.util.List;
 
-    /**
-     * Delete a user, return true if success, return false if fail
-     *
-     * @param user user
-     */
-    @Transactional
-    void deleteUser(User user);
+public interface UserRepository extends JpaRepository<User, String> {
+    User getByUsername(String username);
 
-    /**
-     * Update a user, return true if success, return false if fail
-     *
-     * @param user user
-     */
-    @Transactional
-    void updateUser(User user);
+    User getByEmail(String email);
 
-    /**
-     * Get a user by id, return the user if success, return null if fail
-     *
-     * @param id id
-     * @return User
-     * @throws DAOException DAOException
-     */
-    User getUserByID(String id) throws DAOException;
+    User getByPhoneNumber(String phoneNumber);
 
-    /**
-     * Get a user by username, return the user if success, return null if fail
-     *
-     * @param username username
-     * @return User
-     * @throws DAOException DAOException
-     */
-    User getUserByUsername(String username) throws DAOException;
+    User getByUsernameOrEmailOrPhoneNumber(String username, String email, String phoneNumber);
 
-    /**
-     * Get a user by email, return the user if success, return null if fail
-     *
-     * @param email email
-     * @return User
-     * @throws DAOException DAOException
-     */
-    User getUserByEmail(String email) throws DAOException;
+    List<User> getByRegistrationDateBetween(Date date1, Date date2);
 
-    /**
-     * Get a user by phone number, return the user if success, return null if fail
-     *
-     * @param phoneNumber phone number
-     * @return User
-     * @throws DAOException DAOException
-     */
-    User getUserByPhoneNumber(String phoneNumber) throws DAOException;
+    Boolean existsByUsername(String username);
 
-    /**
-     * Check if a user exists by id, return true if exists, return false if not exists
-     *
-     * @param id id
-     * @return boolean
-     */
-    boolean isUserExistsByID(String id);
+    Boolean existsByEmail(String email);
 
-    /**
-     * Check if a user exists by username, return true if exists, return false if not exists
-     *
-     * @param username username
-     * @return boolean
-     */
-    boolean isUserExistsByUsername(String username);
-
-    /**
-     * Check if a user exists by email, return true if exists, return false if not exists
-     *
-     * @param email email
-     * @return boolean
-     */
-    boolean isUserExistsByEmail(String email);
-
-    /**
-     * Check if a user exists by phone number, return true if exists, return false if not exists
-     *
-     * @param phoneNumber phone number
-     * @return boolean
-     */
-    boolean isUserExistsByPhoneNumber(String phoneNumber);
+    Boolean existsByPhoneNumber(String phoneNumber);
 }
