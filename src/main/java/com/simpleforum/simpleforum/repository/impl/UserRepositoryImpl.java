@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -23,8 +23,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public User createUser(User user) {
         user.setID(NanoIdUtils.randomNanoId());
-        user.setRegistrationDate(new Date(System.currentTimeMillis()));
-        user.setLastLoginDate(new Date(System.currentTimeMillis()));
+        user.setRegistrationDate(new Date());
+        user.setLastLoginDate(new Date());
         this.entityManager.persist(user);
         logger.debug("User created: {}", user);
         return user;

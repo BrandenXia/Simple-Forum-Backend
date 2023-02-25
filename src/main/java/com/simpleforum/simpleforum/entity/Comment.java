@@ -3,7 +3,7 @@ package com.simpleforum.simpleforum.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "comments")
