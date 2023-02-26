@@ -39,7 +39,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("register success");
+                .setMessage("success");
     }
 
     @PostMapping("/login")
@@ -49,7 +49,7 @@ public class UserController {
             return ResponseUtils.createResponse()
                     .error()
                     .setCode(400)
-                    .setMessage("invalid username or password");
+                    .setMessage("invalid username, email, phone number or password");
         }
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
@@ -58,7 +58,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("login success")
+                .setMessage("success")
                 .setData(Map.of("token", token));
     }
 
@@ -112,7 +112,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("update success");
+                .setMessage("success");
     }
 
     @GetMapping("/current")
@@ -127,7 +127,7 @@ public class UserController {
         return ResponseUtils.createResponse()
                 .success()
                 .setCode(200)
-                .setMessage("get current user success")
+                .setMessage("success")
                 .setData(Map.of("username", user.getUsername()));
     }
 }
