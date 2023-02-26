@@ -10,5 +10,7 @@ import java.util.List;
 public interface UserWarningRepository extends JpaRepository<UserWarning, String> {
     List<UserWarning> findByUser(User user);
 
+    List<UserWarning> findByModerator(User moderator);
+
     List<UserWarning> findByDateBetween(Date date1, Date date2);
 }
