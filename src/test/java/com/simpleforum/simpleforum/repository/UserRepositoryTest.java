@@ -18,7 +18,7 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @BeforeEach
-    void beforeAll() {
+    void setUp() {
         User user = new User();
         user.setID("test");
         user.setUsername("test");
