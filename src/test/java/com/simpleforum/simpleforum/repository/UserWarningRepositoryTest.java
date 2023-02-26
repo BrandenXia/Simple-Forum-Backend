@@ -52,21 +52,21 @@ class UserWarningRepositoryTest {
 
     @Test
     void findByUser() {
-        User user = userRepository.getByUsername("test");
+        User user = userRepository.findByUsername("test");
         UserWarning userWarning = userWarningRepository.findByUser(user).get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
-        User moderator = userRepository.getByUsername("moderator");
+        User moderator = userRepository.findByUsername("moderator");
         assertEquals(0, userWarningRepository.findByUser(moderator).size());
     }
 
     @Test
     void findByModerator() {
-        User moderator = userRepository.getByUsername("moderator");
+        User moderator = userRepository.findByUsername("moderator");
         UserWarning userWarning = userWarningRepository.findByModerator(moderator).get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
-        User user = userRepository.getByUsername("test");
+        User user = userRepository.findByUsername("test");
         assertEquals(0, userWarningRepository.findByModerator(user).size());
     }
 

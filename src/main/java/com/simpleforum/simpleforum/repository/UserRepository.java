@@ -7,15 +7,15 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
-    User getByUsername(String username);
+    User findByUsername(String username);
 
-    User getByEmail(String email);
+    User findByEmail(String email);
 
-    User getByPhoneNumber(String phoneNumber);
+    User findByPhoneNumber(String phoneNumber);
 
-    User getByUsernameOrEmailOrPhoneNumber(String username, String email, String phoneNumber);
+    User findByUsernameOrEmailOrPhoneNumber(String username, String email, String phoneNumber);
 
-    List<User> getByRegistrationDateBetween(Date date1, Date date2);
+    List<User> findByRegistrationDateBetween(Date date1, Date date2);
 
     Boolean existsByUsername(String username);
 

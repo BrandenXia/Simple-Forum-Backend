@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean login(String username, String email, String phoneNumber, String password) {
-        User user = userRepository.getByUsernameOrEmailOrPhoneNumber(username, email, phoneNumber);
+        User user = userRepository.findByUsernameOrEmailOrPhoneNumber(username, email, phoneNumber);
         if (user == null) {
             return false;
         }
@@ -94,6 +94,6 @@ public class UserServiceImpl implements UserService {
         if (username == null) {
             return null;
         }
-        return userRepository.getByUsername(username);
+        return userRepository.findByUsername(username);
     }
 }

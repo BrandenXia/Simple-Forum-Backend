@@ -31,53 +31,53 @@ class UserRepositoryTest {
     }
 
     @Test
-    void getByUsername() {
-        User user = userRepository.getByUsername("test");
+    void findByUsername() {
+        User user = userRepository.findByUsername("test");
         assertNotNull(user);
         assertEquals("test", user.getID());
-        User user1 = userRepository.getByUsername("test1");
+        User user1 = userRepository.findByUsername("test1");
         assertNull(user1);
     }
 
     @Test
-    void getByEmail() {
-        User user = userRepository.getByEmail("test@test.com");
+    void findByEmail() {
+        User user = userRepository.findByEmail("test@test.com");
         assertNotNull(user);
         assertEquals("test", user.getID());
-        User user1 = userRepository.getByEmail("test1@test.com");
+        User user1 = userRepository.findByEmail("test1@test.com");
         assertNull(user1);
     }
 
     @Test
-    void getByPhoneNumber() {
-        User user = userRepository.getByPhoneNumber("1234567890");
+    void findByPhoneNumber() {
+        User user = userRepository.findByPhoneNumber("1234567890");
         assertNotNull(user);
         assertEquals("test", user.getID());
-        User user1 = userRepository.getByPhoneNumber("1234567891");
+        User user1 = userRepository.findByPhoneNumber("1234567891");
         assertNull(user1);
     }
 
     @Test
-    void getByUsernameOrEmailOrPhoneNumber() {
-        User user = userRepository.getByUsernameOrEmailOrPhoneNumber("test", null, null);
+    void findByUsernameOrEmailOrPhoneNumber() {
+        User user = userRepository.findByUsernameOrEmailOrPhoneNumber("test", null, null);
         assertNotNull(user);
         assertEquals("test", user.getID());
-        User user1 = userRepository.getByUsernameOrEmailOrPhoneNumber(null, "test@test.com", null);
+        User user1 = userRepository.findByUsernameOrEmailOrPhoneNumber(null, "test@test.com", null);
         assertNotNull(user1);
         assertEquals("test", user1.getID());
-        User user2 = userRepository.getByUsernameOrEmailOrPhoneNumber(null, null, "1234567890");
+        User user2 = userRepository.findByUsernameOrEmailOrPhoneNumber(null, null, "1234567890");
         assertNotNull(user2);
         assertEquals("test", user2.getID());
-        User user3 = userRepository.getByUsernameOrEmailOrPhoneNumber("test1", "test1@test.com", "1234567891");
+        User user3 = userRepository.findByUsernameOrEmailOrPhoneNumber("test1", "test1@test.com", "1234567891");
         assertNull(user3);
     }
 
     @Test
-    void getByRegistrationDateBetween() {
-        User user = userRepository.getByRegistrationDateBetween(new Date(0), new Date()).get(0);
+    void findByRegistrationDateBetween() {
+        User user = userRepository.findByRegistrationDateBetween(new Date(0), new Date()).get(0);
         assertNotNull(user);
         assertEquals("test", user.getID());
-        assertEquals(0, userRepository.getByRegistrationDateBetween(new Date(0), new Date(0)).size());
+        assertEquals(0, userRepository.findByRegistrationDateBetween(new Date(0), new Date(0)).size());
     }
 
     @Test
