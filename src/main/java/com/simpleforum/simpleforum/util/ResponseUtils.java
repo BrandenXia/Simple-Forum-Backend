@@ -2,6 +2,8 @@ package com.simpleforum.simpleforum.util;
 
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 public class ResponseUtils {
     public static Response createResponse() {
         return new Response();
@@ -9,39 +11,32 @@ public class ResponseUtils {
 
     public static class Response {
         @Getter
-        private String status;
+        private final Timestamp timestamp;
 
         @Getter
-        private int code;
+        private int status;
+
+        @Getter
+        private String message;
 
         @Getter
         private Object data;
 
         @Getter
-        private String message;
+        private String error;
 
         public Response() {
-        }
-
-        public Response(String status, int code, Object data, String message) {
-            this.status = status;
-            this.code = code;
-            this.data = data;
-            this.message = message;
+            this.timestamp = new Timestamp(System.currentTimeMillis());
         }
 
         public Response success() {
-            this.status = "success";
+            this.status = 200;
             return this;
         }
 
-        public Response error() {
-            this.status = "error";
-            return this;
-        }
-
-        public Response setCode(int code) {
-            this.code = code;
+        public Response error(int code, String error) {
+            this.status = code;
+            this.error = error;
             return this;
         }
 
