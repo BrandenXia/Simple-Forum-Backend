@@ -5,15 +5,13 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simpleforum.simpleforum.util.JwtUtils;
+import com.simpleforum.simpleforum.util.ResponseUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
@@ -25,30 +23,23 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        Map<String, Object> map = new HashMap<>();
         String token = request.getHeader("token");
+        ResponseUtils.Response content = ResponseUtils.createResponse();
         try {
             JwtUtils.verify(token);
             return true;
         } catch (SignatureVerificationException e) {
-            map.put("msg", "Invalid signature");
-            map.put("code", 401);
+            content.error(401, "Invalid signature");
         } catch (TokenExpiredException e) {
-            map.put("msg", "Token expired");
-            map.put("code", 401);
+            content.error(401, "Token expired");
         } catch (AlgorithmMismatchException e) {
-            map.put("msg", "Algorithm mismatch");
-            map.put("code", 401);
+            content.error(401, "Algorithm mismatch");
         } catch (Exception e) {
-            map.put("msg", "Invalid token");
-            map.put("code", 401);
+            content.error(401, "Invalid token");
         }
-        map.put("state", false);
-        logger.debug("JwtInterceptor: " + map);
+        logger.debug("JwtInterceptor: " + content);
 
-        Map<String, Object> res = new HashMap<>();
-        res.put("data", map);
-        String json = new ObjectMapper().writeValueAsString(res);
+        String json = new ObjectMapper().writeValueAsString(content);
 
         response.setContentType("application/json; charset=UTF-8");
         response.getWriter().print(json);
