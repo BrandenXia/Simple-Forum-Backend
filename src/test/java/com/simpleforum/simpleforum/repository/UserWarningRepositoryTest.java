@@ -77,4 +77,20 @@ class UserWarningRepositoryTest {
         assertEquals("test", userWarning.getId());
         assertEquals(0, userWarningRepository.findByDateBetween(new Date(0), new Date(0)).size());
     }
+
+    @Test
+    void findByDateAfter() {
+        UserWarning userWarning = userWarningRepository.findByDateAfter(new Date(0)).get(0);
+        assertNotNull(userWarning);
+        assertEquals("test", userWarning.getId());
+        assertEquals(0, userWarningRepository.findByDateAfter(new Date()).size());
+    }
+
+    @Test
+    void findByDateBefore() {
+        UserWarning userWarning = userWarningRepository.findByDateBefore(new Date()).get(0);
+        assertNotNull(userWarning);
+        assertEquals("test", userWarning.getId());
+        assertEquals(0, userWarningRepository.findByDateBefore(new Date(0)).size());
+    }
 }

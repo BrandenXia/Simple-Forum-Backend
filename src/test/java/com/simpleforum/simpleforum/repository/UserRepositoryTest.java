@@ -81,6 +81,22 @@ class UserRepositoryTest {
     }
 
     @Test
+    void findByRegistrationDateAfter() {
+        User user = userRepository.findByRegistrationDateAfter(new Date(0)).get(0);
+        assertNotNull(user);
+        assertEquals("test", user.getID());
+        assertEquals(0, userRepository.findByRegistrationDateAfter(new Date()).size());
+    }
+
+    @Test
+    void findByRegistrationDateBefore() {
+        User user = userRepository.findByRegistrationDateBefore(new Date()).get(0);
+        assertNotNull(user);
+        assertEquals("test", user.getID());
+        assertEquals(0, userRepository.findByRegistrationDateBefore(new Date(0)).size());
+    }
+
+    @Test
     void existsByUsername() {
         assertTrue(userRepository.existsByUsername("test"));
         assertFalse(userRepository.existsByUsername("test1"));
