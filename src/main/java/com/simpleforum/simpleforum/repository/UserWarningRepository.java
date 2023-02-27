@@ -13,4 +13,8 @@ public interface UserWarningRepository extends JpaRepository<UserWarning, String
     List<UserWarning> findByModerator(User moderator);
 
     List<UserWarning> findByDateBetween(Date date1, Date date2);
+
+    List<UserWarning> findByDateAfter(Date date);
+
+    List<UserWarning> findByDateBefore(Date date);
 }

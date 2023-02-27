@@ -17,6 +17,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     List<User> findByRegistrationDateBetween(Date date1, Date date2);
 
+    List<User> findByRegistrationDateAfter(Date date);
+
+    List<User> findByRegistrationDateBefore(Date date);
+
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);
