@@ -12,8 +12,9 @@ spring:
       idle-timeout: 30000
   jpa:
     open-in-view: false
-  profiles:
-    active: development
+logging:
+  file:
+    path: ./logs
 
 ---
 
@@ -29,10 +30,10 @@ spring:
         hbm2ddl:
           auto: update
 logging:
-  file:
-    path: logs/dev.log
   level:
     root: debug
+  file:
+    name: ./dev.log
 
 ---
 
@@ -47,7 +48,7 @@ server:
   error:
     include-stacktrace: never
 logging:
-  file:
-    path: logs/prod.log
   level:
     root: info
+  file:
+    name: ./prod.log
