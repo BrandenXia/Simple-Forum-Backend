@@ -12,10 +12,27 @@ spring:
       idle-timeout: 30000
   jpa:
     open-in-view: false
+  profiles:
+    active: development
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: development
+  jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         hbm2ddl:
           auto: update
+logging:
+  file:
+    path: logs/dev.log
+  level:
+    root: debug
 
 ---
 
@@ -29,3 +46,8 @@ spring:
 server:
   error:
     include-stacktrace: never
+logging:
+  file:
+    path: logs/prod.log
+  level:
+    root: info
