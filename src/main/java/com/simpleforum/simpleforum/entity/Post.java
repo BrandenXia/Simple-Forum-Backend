@@ -22,21 +22,28 @@ public class Post {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created_time;
+    private Date createdTime;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updated_time;
+    private Date updatedTime;
 
     @Column(nullable = false)
-    private Boolean is_locked;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastCommentTime;
 
     @Column(nullable = false)
-    private Boolean is_deleted;
+    private Boolean locked;
+
+    @Column(nullable = false)
+    private Boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)

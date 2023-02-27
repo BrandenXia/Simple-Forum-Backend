@@ -18,11 +18,11 @@ public class Comment {
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date created_time;
+    private Date createdTime;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date updated_time;
+    private Date updatedTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
