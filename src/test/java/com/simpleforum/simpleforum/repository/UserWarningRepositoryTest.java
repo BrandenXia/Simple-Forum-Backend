@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -20,6 +23,8 @@ class UserWarningRepositoryTest {
 
     @Autowired
     UserWarningRepository userWarningRepository;
+
+    Pageable pageable = PageRequest.of(0, 10);
 
     @BeforeEach
     void setUp() {
@@ -53,44 +58,49 @@ class UserWarningRepositoryTest {
     @Test
     void findByUser() {
         User user = userRepository.findByUsername("test");
-        UserWarning userWarning = userWarningRepository.findByUser(user).get(0);
+        Page<UserWarning> userWarnings = userWarningRepository.findByUser(user, pageable);
+        UserWarning userWarning = userWarnings.getContent().get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
         User moderator = userRepository.findByUsername("moderator");
-        assertEquals(0, userWarningRepository.findByUser(moderator).size());
+        assertEquals(0, userWarningRepository.findByUser(moderator, pageable).getContent().size());
     }
 
     @Test
     void findByModerator() {
         User moderator = userRepository.findByUsername("moderator");
-        UserWarning userWarning = userWarningRepository.findByModerator(moderator).get(0);
+        Page<UserWarning> userWarnings = userWarningRepository.findByModerator(moderator, pageable);
+        UserWarning userWarning = userWarnings.getContent().get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
         User user = userRepository.findByUsername("test");
-        assertEquals(0, userWarningRepository.findByModerator(user).size());
+        assertEquals(0, userWarningRepository.findByModerator(user, pageable).getContent().size());
     }
 
     @Test
     void findByDateBetween() {
-        UserWarning userWarning = userWarningRepository.findByDateBetween(new Date(0), new Date()).get(0);
+        Page<UserWarning> userWarnings = userWarningRepository.findByDateBetween(new Date(0), new Date(), pageable);
+        UserWarning userWarning = userWarnings.getContent().get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
-        assertEquals(0, userWarningRepository.findByDateBetween(new Date(0), new Date(0)).size());
+        assertEquals(0, userWarningRepository.findByDateBetween(new Date(0), new Date(0), pageable).getContent().size());
     }
 
     @Test
     void findByDateAfter() {
-        UserWarning userWarning = userWarningRepository.findByDateAfter(new Date(0)).get(0);
+        Page<UserWarning> userWarnings = userWarningRepository.findByDateAfter(new Date(0), pageable);
+        UserWarning userWarning = userWarnings.getContent().get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
-        assertEquals(0, userWarningRepository.findByDateAfter(new Date()).size());
+        assertEquals(0, userWarningRepository.findByDateAfter(new Date(), pageable).getContent().size());
     }
 
     @Test
     void findByDateBefore() {
-        UserWarning userWarning = userWarningRepository.findByDateBefore(new Date()).get(0);
+        Page<UserWarning> userWarnings = userWarningRepository.findByDateBefore(new Date(), pageable);
+        UserWarning userWarning = userWarnings.getContent().get(0);
         assertNotNull(userWarning);
         assertEquals("test", userWarning.getId());
-        assertEquals(0, userWarningRepository.findByDateBefore(new Date(0)).size());
+        assertEquals(0, userWarningRepository.findByDateBefore(new Date(0), pageable).getContent().size());
     }
 }

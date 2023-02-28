@@ -1,10 +1,11 @@
 package com.simpleforum.simpleforum.repository;
 
 import com.simpleforum.simpleforum.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
-import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, String> {
     User findByUsername(String username);
@@ -15,11 +16,11 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findByUsernameOrEmailOrPhoneNumber(String username, String email, String phoneNumber);
 
-    List<User> findByRegistrationDateBetween(Date date1, Date date2);
+    Page<User> findByRegistrationDateBetween(Date date1, Date date2, Pageable pageable);
 
-    List<User> findByRegistrationDateAfter(Date date);
+    Page<User> findByRegistrationDateAfter(Date date, Pageable pageable);
 
-    List<User> findByRegistrationDateBefore(Date date);
+    Page<User> findByRegistrationDateBefore(Date date, Pageable pageable);
 
     Boolean existsByUsername(String username);
 

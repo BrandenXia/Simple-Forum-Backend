@@ -5,6 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -16,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
+
+    Pageable pageable = PageRequest.of(0, 1, Sort.by("registrationDate").descending());
 
     @BeforeEach
     void setUp() {
@@ -74,26 +80,29 @@ class UserRepositoryTest {
 
     @Test
     void findByRegistrationDateBetween() {
-        User user = userRepository.findByRegistrationDateBetween(new Date(0), new Date()).get(0);
+        Page<User> users = userRepository.findByRegistrationDateBetween(new Date(0), new Date(), pageable);
+        User user = users.getContent().get(0);
         assertNotNull(user);
         assertEquals("test", user.getID());
-        assertEquals(0, userRepository.findByRegistrationDateBetween(new Date(0), new Date(0)).size());
+        assertEquals(0, userRepository.findByRegistrationDateBetween(new Date(0), new Date(0), pageable).getContent().size());
     }
 
     @Test
     void findByRegistrationDateAfter() {
-        User user = userRepository.findByRegistrationDateAfter(new Date(0)).get(0);
+        Page<User> users = userRepository.findByRegistrationDateAfter(new Date(0), pageable);
+        User user = users.getContent().get(0);
         assertNotNull(user);
         assertEquals("test", user.getID());
-        assertEquals(0, userRepository.findByRegistrationDateAfter(new Date()).size());
+        assertEquals(0, userRepository.findByRegistrationDateAfter(new Date(), pageable).getContent().size());
     }
 
     @Test
     void findByRegistrationDateBefore() {
-        User user = userRepository.findByRegistrationDateBefore(new Date()).get(0);
+        Page<User> users = userRepository.findByRegistrationDateBefore(new Date(), pageable);
+        User user = users.getContent().get(0);
         assertNotNull(user);
         assertEquals("test", user.getID());
-        assertEquals(0, userRepository.findByRegistrationDateBefore(new Date(0)).size());
+        assertEquals(0, userRepository.findByRegistrationDateBefore(new Date(0), pageable).getContent().size());
     }
 
     @Test

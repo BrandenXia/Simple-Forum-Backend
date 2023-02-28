@@ -2,19 +2,20 @@ package com.simpleforum.simpleforum.repository;
 
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.entity.UserWarning;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
-import java.util.List;
 
 public interface UserWarningRepository extends JpaRepository<UserWarning, String> {
-    List<UserWarning> findByUser(User user);
+    Page<UserWarning> findByUser(User user, Pageable pageable);
 
-    List<UserWarning> findByModerator(User moderator);
+    Page<UserWarning> findByModerator(User moderator, Pageable pageable);
 
-    List<UserWarning> findByDateBetween(Date date1, Date date2);
+    Page<UserWarning> findByDateBetween(Date date1, Date date2, Pageable pageable);
 
-    List<UserWarning> findByDateAfter(Date date);
+    Page<UserWarning> findByDateAfter(Date date, Pageable pageable);
 
-    List<UserWarning> findByDateBefore(Date date);
+    Page<UserWarning> findByDateBefore(Date date, Pageable pageable);
 }
