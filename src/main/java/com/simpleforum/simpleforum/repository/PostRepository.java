@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post,String> {
-    Page<Post> findByOrderByCreatedTimeDesc(Pageable pageable);
     Page<Post> findByUserOrderByCreatedTime(Pageable pageable, User user);
+
+    Page<Post> findByDeleted(Boolean deleted, Pageable pageable);
+
+    Page<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseAndDeleted(String title, String content, Boolean deleted ,Pageable pageable);
 }

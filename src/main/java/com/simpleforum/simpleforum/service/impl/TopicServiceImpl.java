@@ -9,8 +9,6 @@ import com.simpleforum.simpleforum.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
@@ -76,10 +74,5 @@ public class TopicServiceImpl implements TopicService {
         }
         topic.setName(newName);
         topicRepository.save(topic);
-    }
-
-    @Override
-    public List<Topic> getTopics() {
-        return topicRepository.findAll();
     }
 }
