@@ -13,12 +13,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    private final UserService userService;
 
     @PostMapping("/register")
     public ResponseUtils.Response register(@RequestBody User registerUser) {

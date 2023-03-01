@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
-
     private final PermissionRepository permissionRepository;
 
     @Autowired
@@ -22,7 +21,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic createTopic(String name) {
+    public Topic createTopic(String name) throws RuntimeException {
         if (topicRepository.existsByName(name)) {
             throw new RuntimeException("Topic already exists");
         }
@@ -46,7 +45,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteTopic(String name) {
+    public void deleteTopic(String name) throws RuntimeException {
         Topic topic = topicRepository.findByName(name);
         if (topic == null) {
             throw new RuntimeException("Topic not found");
@@ -67,7 +66,7 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void updateTopic(String name, String newName) {
+    public void updateTopic(String name, String newName) throws RuntimeException {
         Topic topic = topicRepository.findByName(name);
         if (topic == null) {
             throw new RuntimeException("Topic not found");

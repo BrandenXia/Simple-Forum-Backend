@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<Post> searchPosts(String search, Pageable pageable) {
-        return postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseAndDeleted(search, search, false , pageable);
+        return postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCaseAndDeleted(search, search, false, pageable);
     }
 
     @Override

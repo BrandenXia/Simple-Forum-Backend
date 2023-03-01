@@ -18,10 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class UserRepositoryTest {
+    Pageable pageable = PageRequest.of(0, 1, Sort.by("registrationDate").descending());
     @Autowired
     private UserRepository userRepository;
-
-    Pageable pageable = PageRequest.of(0, 1, Sort.by("registrationDate").descending());
 
     @BeforeEach
     void setUp() {

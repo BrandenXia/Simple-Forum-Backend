@@ -17,9 +17,9 @@ public interface UserService {
     /**
      * Login a user
      *
-     * @param username username
-     * @param password password
-     * @param email email
+     * @param username    username
+     * @param password    password
+     * @param email       email
      * @param phoneNumber phone number
      * @return success or not
      */
