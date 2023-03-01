@@ -6,6 +6,8 @@ import com.simpleforum.simpleforum.entity.Topic;
 import com.simpleforum.simpleforum.repository.PermissionRepository;
 import com.simpleforum.simpleforum.repository.TopicRepository;
 import com.simpleforum.simpleforum.service.TopicService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 public class TopicServiceImpl implements TopicService {
     private final TopicRepository topicRepository;
     private final PermissionRepository permissionRepository;
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public TopicServiceImpl(TopicRepository topicRepository, PermissionRepository permissionRepository) {
@@ -32,15 +36,15 @@ public class TopicServiceImpl implements TopicService {
         Permission readPermission = new Permission();
         readPermission.setId(NanoIdUtils.randomNanoId());
         readPermission.setName("read-" + name);
-        topicRepository.save(topic);
+        permissionRepository.save(readPermission);
         Permission writePermission = new Permission();
         writePermission.setId(NanoIdUtils.randomNanoId());
         writePermission.setName("write-" + name);
-        topicRepository.save(topic);
+        permissionRepository.save(writePermission);
         Permission deletePermission = new Permission();
         deletePermission.setId(NanoIdUtils.randomNanoId());
         deletePermission.setName("delete-" + name);
-        topicRepository.save(topic);
+        permissionRepository.save(deletePermission);
         return topic;
     }
 
@@ -52,15 +56,21 @@ public class TopicServiceImpl implements TopicService {
         }
         Permission readPermission = permissionRepository.findByName("read-" + name);
         if (readPermission == null) {
-            throw new RuntimeException("Read permission not found");
+            logger.warn("Read permission not found");
+        } else {
+            permissionRepository.delete(readPermission);
         }
         Permission writePermission = permissionRepository.findByName("write-" + name);
         if (writePermission == null) {
-            throw new RuntimeException("Write permission not found");
+            logger.warn("Write permission not found");
+        } else {
+            permissionRepository.delete(writePermission);
         }
         Permission deletePermission = permissionRepository.findByName("delete-" + name);
         if (deletePermission == null) {
-            throw new RuntimeException("Delete permission not found");
+            logger.warn("Delete permission not found");
+        } else {
+            permissionRepository.delete(deletePermission);
         }
         topicRepository.delete(topic);
     }
@@ -73,5 +83,26 @@ public class TopicServiceImpl implements TopicService {
         }
         topic.setName(newName);
         topicRepository.save(topic);
+        Permission readPermission = permissionRepository.findByName("read-" + name);
+        if (readPermission == null) {
+            logger.warn("Read permission not found");
+        } else {
+            readPermission.setName("read-" + newName);
+            permissionRepository.save(readPermission);
+        }
+        Permission writePermission = permissionRepository.findByName("write-" + name);
+        if (writePermission == null) {
+            logger.warn("Write permission not found");
+        } else {
+            writePermission.setName("write-" + newName);
+            permissionRepository.save(writePermission);
+        }
+        Permission deletePermission = permissionRepository.findByName("delete-" + name);
+        if (deletePermission == null) {
+            logger.warn("Delete permission not found");
+        } else {
+            deletePermission.setName("delete-" + newName);
+            permissionRepository.save(deletePermission);
+        }
     }
 }

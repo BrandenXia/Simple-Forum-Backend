@@ -1,6 +1,7 @@
 package com.simpleforum.simpleforum.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,4 +21,8 @@ public class Topic {
 
     @OneToMany(mappedBy = "topic")
     private List<Post> posts;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String newName;
 }
