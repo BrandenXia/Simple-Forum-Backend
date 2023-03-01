@@ -1,5 +1,6 @@
 package com.simpleforum.simpleforum.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -35,6 +36,7 @@ public class Post {
     @Column(nullable = false)
     private Boolean locked;
 
+    @JsonIgnore
     @Column(nullable = false)
     private Boolean deleted;
 

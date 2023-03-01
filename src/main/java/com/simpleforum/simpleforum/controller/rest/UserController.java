@@ -1,6 +1,5 @@
 package com.simpleforum.simpleforum.controller.rest;
 
-import com.simpleforum.simpleforum.dto.UserDTO;
 import com.simpleforum.simpleforum.entity.User;
 import com.simpleforum.simpleforum.service.UserService;
 import com.simpleforum.simpleforum.util.JwtUtils;
@@ -14,15 +13,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private final UserService userService;
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    private final UserService userService;
+
     @PostMapping("/register")
-    public ResponseUtils.Response register(@RequestBody UserDTO registerUser) {
+    public ResponseUtils.Response register(@RequestBody User registerUser) {
         if (registerUser.getUsername() == null || registerUser.getPassword() == null) {
             return ResponseUtils.createResponse()
                     .error(400, "invalid username or password");
@@ -37,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseUtils.Response login(@RequestBody UserDTO user) {
+    public ResponseUtils.Response login(@RequestBody User user) {
         Boolean result = userService.login(user.getUsername(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
         if (!result) {
             return ResponseUtils.createResponse()
@@ -53,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public ResponseUtils.Response update(@RequestHeader("token") String token, @RequestBody UserDTO user) {
+    public ResponseUtils.Response update(@RequestHeader("token") String token, @RequestBody User user) {
         User currentUser = userService.getCurrentUser(token);
         if (currentUser == null) {
             return ResponseUtils.createResponse()

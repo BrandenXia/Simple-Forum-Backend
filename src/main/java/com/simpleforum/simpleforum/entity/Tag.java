@@ -1,5 +1,6 @@
 package com.simpleforum.simpleforum.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Table(name = "tags")
 @Data
 public class Tag {
+    @JsonIgnore
     @Id
     @Column(unique = true, nullable = false, updatable = false, length = 21)
     private String id;
