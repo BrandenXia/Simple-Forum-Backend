@@ -15,4 +15,6 @@ public interface PostService {
     Page<Post> searchPosts(String search, Pageable pageable);
 
     Page<Post> getRecentPost(int page, int size);
+
+    Page<Post> getPostsByTopic(Topic topic, int page, int size);
 }

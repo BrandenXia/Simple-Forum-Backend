@@ -52,4 +52,9 @@ public class PostServiceImpl implements PostService {
     public Page<Post> getRecentPost(int page, int size) {
         return postRepository.findByDeleted(false, PageRequest.of(page, size, Sort.by("createdTime").descending()));
     }
+
+    @Override
+    public Page<Post> getPostsByTopic(Topic topic, int page, int size) {
+        return postRepository.findByTopicAndDeleted(topic, false, PageRequest.of(page, size, Sort.by("createdTime").descending()));
+    }
 }
