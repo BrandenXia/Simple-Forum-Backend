@@ -1,13 +1,16 @@
 package com.simpleforum.simpleforum.controller.rest;
 
+import com.simpleforum.simpleforum.dto.ResponseDTO;
 import com.simpleforum.simpleforum.entity.Post;
 import com.simpleforum.simpleforum.entity.Topic;
 import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.exception.PermissionException;
+import com.simpleforum.simpleforum.exception.RequestBodyException;
+import com.simpleforum.simpleforum.exception.TokenException;
 import com.simpleforum.simpleforum.service.PermissionService;
 import com.simpleforum.simpleforum.service.PostService;
 import com.simpleforum.simpleforum.service.TopicService;
 import com.simpleforum.simpleforum.service.UserService;
-import com.simpleforum.simpleforum.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,30 +34,25 @@ public class PostController {
     }
 
     @PostMapping("/{topicID}/create")
-    public ResponseUtils.Response createPost(@RequestHeader("token") String token, @RequestBody Post post, @PathVariable("topicID") String topicID) {
+    public ResponseDTO createPost(@RequestHeader("token") String token, @RequestBody Post post, @PathVariable("topicID") String topicID) {
         User user = userService.getCurrentUser(token);
         if (user == null) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid token");
+            throw new TokenException("invalid token");
         }
         if (post.getTitle() == null || post.getTitle().length() == 0) {
-            return ResponseUtils.createResponse()
-                    .error(400, "title is required");
+            throw new RequestBodyException("title is required");
         }
         if (post.getContent() == null || post.getContent().length() == 0) {
-            return ResponseUtils.createResponse()
-                    .error(400, "content is required");
+            throw new RequestBodyException("content is required");
         }
-        try {
-            Topic topic = topicService.getTopic(topicID);
-            permissionService.isUserAllowedToWriteInTopic(user, topic);
-            postService.createPost(post.getTitle(), post.getContent(), user, post.getTags(), topic);
-            return ResponseUtils.createResponse()
-                    .success()
-                    .setData(post);
-        } catch (Exception e) {
-            return ResponseUtils.createResponse()
-                    .error(400, e.getMessage());
+        Topic topic = topicService.getTopic(topicID);
+        if (!permissionService.isUserAllowedToWriteInTopic(user, topic)) {
+            throw new PermissionException("Permission denied");
         }
+        postService.createPost(post.getTitle(), post.getContent(), user, post.getTags(), topic);
+        return ResponseDTO.builder()
+                .status(200)
+                .data(post)
+                .build();
     }
 }

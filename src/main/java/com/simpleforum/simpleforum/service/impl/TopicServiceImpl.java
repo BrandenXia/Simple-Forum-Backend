@@ -3,6 +3,8 @@ package com.simpleforum.simpleforum.service.impl;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.simpleforum.simpleforum.entity.Permission;
 import com.simpleforum.simpleforum.entity.Topic;
+import com.simpleforum.simpleforum.exception.AlreadyExistException;
+import com.simpleforum.simpleforum.exception.NotFoundException;
 import com.simpleforum.simpleforum.repository.PermissionRepository;
 import com.simpleforum.simpleforum.repository.TopicRepository;
 import com.simpleforum.simpleforum.service.TopicService;
@@ -25,9 +27,9 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic createTopic(String name) throws RuntimeException {
+    public Topic createTopic(String name) throws AlreadyExistException {
         if (topicRepository.existsByName(name)) {
-            throw new RuntimeException("Topic already exists");
+            throw new AlreadyExistException("Topic already exists");
         }
         Topic topic = new Topic();
         topic.setId(NanoIdUtils.randomNanoId());
@@ -49,10 +51,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteTopic(String name) throws RuntimeException {
+    public void deleteTopic(String name) throws NotFoundException {
         Topic topic = topicRepository.findByName(name);
         if (topic == null) {
-            throw new RuntimeException("Topic not found");
+            throw new NotFoundException("Topic not found");
         }
         Permission readPermission = permissionRepository.findByName(topic.getReadPermission());
         if (readPermission == null) {
@@ -76,10 +78,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void updateTopic(String name, String newName) throws RuntimeException {
+    public void updateTopic(String name, String newName) throws NotFoundException, AlreadyExistException {
         Topic topic = topicRepository.findByName(name);
         if (topic == null) {
-            throw new RuntimeException("Topic not found");
+            throw new NotFoundException("Topic not found");
+        }
+        if (topicRepository.existsByName(newName)) {
+            throw new AlreadyExistException("Topic already exists");
         }
         topic.setName(newName);
         topicRepository.save(topic);
@@ -107,10 +112,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic getTopic(String ID) throws RuntimeException {
+    public Topic getTopic(String ID) throws NotFoundException {
         Topic topic = topicRepository.findById(ID).orElse(null);
         if (topic == null) {
-            throw new RuntimeException("Topic not found");
+            throw new NotFoundException("Topic not found");
         }
         return topic;
     }

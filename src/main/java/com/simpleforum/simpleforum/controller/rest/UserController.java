@@ -1,9 +1,11 @@
 package com.simpleforum.simpleforum.controller.rest;
 
+import com.simpleforum.simpleforum.dto.ResponseDTO;
 import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.exception.RequestBodyException;
+import com.simpleforum.simpleforum.exception.TokenException;
 import com.simpleforum.simpleforum.service.UserService;
 import com.simpleforum.simpleforum.util.JwtUtils;
-import com.simpleforum.simpleforum.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,83 +22,80 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseUtils.Response register(@RequestBody User registerUser) {
-        if (registerUser.getUsername() == null || registerUser.getPassword() == null) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid username or password");
-        }
-        User user = userService.register(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail(), registerUser.getPhoneNumber());
-        if (user == null) {
-            return ResponseUtils.createResponse()
-                    .error(400, "username, email or phoneNumber already exists");
-        }
-        return ResponseUtils.createResponse()
-                .success();
-    }
-
-    @PostMapping("/login")
-    public ResponseUtils.Response login(@RequestBody User user) {
-        Boolean result = userService.login(user.getUsername(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
-        if (!result) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid username, email, phone number or password");
-        }
+    private String getToken(@RequestBody User user) {
         Map<String, String> payload = new HashMap<>();
         payload.put("username", user.getUsername());
         payload.put("time", String.valueOf(System.currentTimeMillis()));
-        String token = JwtUtils.getToken(payload);
-        return ResponseUtils.createResponse()
-                .success()
-                .setData(Map.of("token", token));
+        return JwtUtils.getToken(payload);
+    }
+
+    @PostMapping("/register")
+    public ResponseDTO register(@RequestBody User registerUser) {
+        if (registerUser.getUsername() == null || registerUser.getPassword() == null) {
+            throw new RequestBodyException("username and password cannot be null");
+        }
+        User user = userService.register(registerUser.getUsername(), registerUser.getPassword(), registerUser.getEmail(), registerUser.getPhoneNumber());
+        return ResponseDTO.builder()
+                .status(200)
+                .data(Map.of("token", getToken(user)))
+                .build();
+    }
+
+    @PostMapping("/login")
+    public ResponseDTO login(@RequestBody User user) {
+        Boolean result = userService.login(user.getUsername(), user.getEmail(), user.getPhoneNumber(), user.getPassword());
+        if (!result) {
+            return ResponseDTO.builder()
+                    .status(400)
+                    .error("invalid username, email, phone number, or password")
+                    .build();
+        }
+        return ResponseDTO.builder()
+                .status(200)
+                .data(Map.of("token", getToken(user)))
+                .build();
     }
 
     @PostMapping("/update")
-    public ResponseUtils.Response update(@RequestHeader("token") String token, @RequestBody User user) {
+    public ResponseDTO update(@RequestHeader("token") String token, @RequestBody User user) {
         User currentUser = userService.getCurrentUser(token);
         if (currentUser == null) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid token");
+            throw new TokenException("invalid token");
         }
         if (!user.getPassword().equals(currentUser.getPassword())) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid password");
+            return ResponseDTO.builder()
+                    .status(400)
+                    .error("invalid password")
+                    .build();
         }
         if (user.getUsername().equals(currentUser.getUsername())) {
-            return ResponseUtils.createResponse()
-                    .error(400, "new username cannot be the same as the old one");
+            throw new RequestBodyException("new username cannot be the same as the old one");
         }
         if (user.getEmail().equals(currentUser.getEmail())) {
-            return ResponseUtils.createResponse()
-                    .error(400, "new email cannot be the same as the old one");
+            throw new RequestBodyException("new email cannot be the same as the old one");
         }
         if (user.getNewPassword().equals(currentUser.getPassword())) {
-            return ResponseUtils.createResponse()
-                    .error(400, "new password cannot be the same as the old one");
+            throw new RequestBodyException("new password cannot be the same as the old one");
         }
         if (user.getPhoneNumber().equals(currentUser.getPhoneNumber())) {
-            return ResponseUtils.createResponse()
-                    .error(400, "new phone number cannot be the same as the old one");
+            throw new RequestBodyException("new phone number cannot be the same as the old one");
         }
-        try {
-            userService.updateUser(currentUser, user.getUsername(), user.getNewPassword(), user.getEmail(), user.getPhoneNumber());
-        } catch (Exception e) {
-            return ResponseUtils.createResponse()
-                    .error(400, e.getMessage());
-        }
-        return ResponseUtils.createResponse()
-                .success();
+        User updateUser = userService.updateUser(currentUser, user.getUsername(), user.getNewPassword(), user.getEmail(), user.getPhoneNumber());
+        return ResponseDTO.builder()
+                .status(200)
+                .data(Map.of("token", getToken(updateUser)))
+                .build();
     }
 
     @GetMapping("/current")
-    public ResponseUtils.Response current(@RequestHeader("token") String token) {
+    public ResponseDTO current(@RequestHeader("token") String token) {
         User user = userService.getCurrentUser(token);
         if (user == null) {
-            return ResponseUtils.createResponse()
-                    .error(400, "invalid token");
+            throw new TokenException("invalid token");
         }
-        return ResponseUtils.createResponse()
-                .success()
-                .setData(Map.of("username", user.getUsername()));
+    return ResponseDTO.builder()
+                .status(200)
+                .data(Map.of("user", user))
+                .build();
     }
 }

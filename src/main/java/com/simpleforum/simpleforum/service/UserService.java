@@ -33,8 +33,9 @@ public interface UserService {
      * @param password    password
      * @param email       email
      * @param phoneNumber phone number
+     * @return the updated user
      */
-    void updateUser(User currentUser, String username, String password, String email, String phoneNumber);
+    User updateUser(User currentUser, String username, String password, String email, String phoneNumber);
 
     /**
      * Get a user by username

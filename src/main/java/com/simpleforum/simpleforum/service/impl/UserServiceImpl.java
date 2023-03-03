@@ -3,6 +3,7 @@ package com.simpleforum.simpleforum.service.impl;
 import com.auth0.jwt.interfaces.Claim;
 import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 import com.simpleforum.simpleforum.entity.User;
+import com.simpleforum.simpleforum.exception.AlreadyExistException;
 import com.simpleforum.simpleforum.repository.UserRepository;
 import com.simpleforum.simpleforum.service.UserService;
 import com.simpleforum.simpleforum.util.JwtUtils;
@@ -24,13 +25,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String username, String password, String email, String phoneNumber) {
         if (userRepository.existsByUsername(username)) {
-            return null;
+            throw new AlreadyExistException("username already exists");
         }
         if (userRepository.existsByEmail(email)) {
-            return null;
+            throw new AlreadyExistException("email already exists");
         }
         if (userRepository.existsByPhoneNumber(phoneNumber)) {
-            return null;
+            throw new AlreadyExistException("phone number already exists");
         }
         User user = new User();
         user.setID(NanoIdUtils.randomNanoId());
@@ -47,10 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean login(String username, String email, String phoneNumber, String password) {
         User user = userRepository.findByUsernameOrEmailOrPhoneNumber(username, email, phoneNumber);
-        if (user == null) {
-            return false;
-        }
-        if (!user.getPassword().equals(password)) {
+        if (user == null || !user.getPassword().equals(password)) {
             return false;
         }
         user.setLastLoginDate(new Date());
@@ -59,10 +57,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User currentUser, String username, String password, String email, String phoneNumber) {
+    public User updateUser(User currentUser, String username, String password, String email, String phoneNumber) {
         if (username != null) {
             if (userRepository.existsByUsername(username)) {
-                throw new RuntimeException("username already exists");
+                throw new AlreadyExistException("username already exists");
             }
             currentUser.setUsername(username);
         }
@@ -71,17 +69,18 @@ public class UserServiceImpl implements UserService {
         }
         if (email != null) {
             if (userRepository.existsByEmail(email)) {
-                throw new RuntimeException("email already exists");
+                throw new AlreadyExistException("email already exists");
             }
             currentUser.setEmail(email);
         }
         if (phoneNumber != null) {
             if (userRepository.existsByPhoneNumber(phoneNumber)) {
-                throw new RuntimeException("phone number already exists");
+                throw new AlreadyExistException("phone number already exists");
             }
             currentUser.setPhoneNumber(phoneNumber);
         }
         userRepository.save(currentUser);
+        return currentUser;
     }
 
     @Override

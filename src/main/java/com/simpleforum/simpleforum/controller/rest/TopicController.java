@@ -1,8 +1,8 @@
 package com.simpleforum.simpleforum.controller.rest;
 
+import com.simpleforum.simpleforum.dto.ResponseDTO;
 import com.simpleforum.simpleforum.entity.Topic;
 import com.simpleforum.simpleforum.service.TopicService;
-import com.simpleforum.simpleforum.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,38 +17,27 @@ public class TopicController {
     }
 
     @PostMapping("/create")
-    public ResponseUtils.Response createTopic(@RequestBody Topic topic) {
-        try {
-            topicService.createTopic(topic.getName());
-        } catch (RuntimeException e) {
-            return ResponseUtils.createResponse()
-                    .error(400, e.getMessage());
-        }
-        return ResponseUtils.createResponse()
-                .success();
+    public ResponseDTO createTopic(@RequestBody Topic topic) {
+        Topic createdTopic = topicService.createTopic(topic.getName());
+        return ResponseDTO.builder()
+                .status(200)
+                .data(createdTopic)
+                .build();
     }
 
     @PostMapping("/delete")
-    public ResponseUtils.Response deleteTopic(@RequestBody Topic topic) {
-        try {
-            topicService.deleteTopic(topic.getName());
-        } catch (RuntimeException e) {
-            return ResponseUtils.createResponse()
-                    .error(400, e.getMessage());
-        }
-        return ResponseUtils.createResponse()
-                .success();
+    public ResponseDTO deleteTopic(@RequestBody Topic topic) {
+        topicService.deleteTopic(topic.getName());
+        return ResponseDTO.builder()
+                .status(200)
+                .build();
     }
 
     @PostMapping("/update")
-    public ResponseUtils.Response updateTopic(@RequestBody Topic topic) {
-        try {
-            topicService.updateTopic(topic.getName(), topic.getNewName());
-        } catch (RuntimeException e) {
-            return ResponseUtils.createResponse()
-                    .error(400, e.getMessage());
-        }
-        return ResponseUtils.createResponse()
-                .success();
+    public ResponseDTO updateTopic(@RequestBody Topic topic) {
+        topicService.updateTopic(topic.getName(), topic.getNewName());
+        return ResponseDTO.builder()
+                .status(200)
+                .build();
     }
 }
