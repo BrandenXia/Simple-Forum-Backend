@@ -8,4 +8,6 @@ public interface TopicService {
     void deleteTopic(String name) throws RuntimeException;
 
     void updateTopic(String name, String newName) throws RuntimeException;
+
+    Topic getTopic(String ID) throws RuntimeException;
 }

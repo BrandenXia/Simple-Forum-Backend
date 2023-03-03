@@ -105,4 +105,13 @@ public class TopicServiceImpl implements TopicService {
             permissionRepository.save(deletePermission);
         }
     }
+
+    @Override
+    public Topic getTopic(String ID) throws RuntimeException {
+        Topic topic = topicRepository.findById(ID).orElse(null);
+        if (topic == null) {
+            throw new RuntimeException("Topic not found");
+        }
+        return topic;
+    }
 }
