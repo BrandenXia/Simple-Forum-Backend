@@ -25,4 +25,28 @@ public class Topic {
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String newName;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String readPermission;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String writePermission;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String deletePermission;
+
+    public String getReadPermission() {
+        return "read-" + name;
+    }
+
+    public String getWritePermission() {
+        return "write-" + name;
+    }
+
+    public String getDeletePermission() {
+        return "delete-" + name;
+    }
 }

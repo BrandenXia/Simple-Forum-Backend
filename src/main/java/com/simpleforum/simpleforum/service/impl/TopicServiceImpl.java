@@ -35,15 +35,15 @@ public class TopicServiceImpl implements TopicService {
         topicRepository.save(topic);
         Permission readPermission = new Permission();
         readPermission.setId(NanoIdUtils.randomNanoId());
-        readPermission.setName("read-" + name);
+        readPermission.setName(topic.getReadPermission());
         permissionRepository.save(readPermission);
         Permission writePermission = new Permission();
         writePermission.setId(NanoIdUtils.randomNanoId());
-        writePermission.setName("write-" + name);
+        writePermission.setName(topic.getWritePermission());
         permissionRepository.save(writePermission);
         Permission deletePermission = new Permission();
         deletePermission.setId(NanoIdUtils.randomNanoId());
-        deletePermission.setName("delete-" + name);
+        deletePermission.setName(topic.getDeletePermission());
         permissionRepository.save(deletePermission);
         return topic;
     }
@@ -54,19 +54,19 @@ public class TopicServiceImpl implements TopicService {
         if (topic == null) {
             throw new RuntimeException("Topic not found");
         }
-        Permission readPermission = permissionRepository.findByName("read-" + name);
+        Permission readPermission = permissionRepository.findByName(topic.getReadPermission());
         if (readPermission == null) {
             logger.warn("Read permission not found");
         } else {
             permissionRepository.delete(readPermission);
         }
-        Permission writePermission = permissionRepository.findByName("write-" + name);
+        Permission writePermission = permissionRepository.findByName(topic.getWritePermission());
         if (writePermission == null) {
             logger.warn("Write permission not found");
         } else {
             permissionRepository.delete(writePermission);
         }
-        Permission deletePermission = permissionRepository.findByName("delete-" + name);
+        Permission deletePermission = permissionRepository.findByName(topic.getDeletePermission());
         if (deletePermission == null) {
             logger.warn("Delete permission not found");
         } else {
@@ -83,21 +83,21 @@ public class TopicServiceImpl implements TopicService {
         }
         topic.setName(newName);
         topicRepository.save(topic);
-        Permission readPermission = permissionRepository.findByName("read-" + name);
+        Permission readPermission = permissionRepository.findByName(topic.getReadPermission());
         if (readPermission == null) {
             logger.warn("Read permission not found");
         } else {
             readPermission.setName("read-" + newName);
             permissionRepository.save(readPermission);
         }
-        Permission writePermission = permissionRepository.findByName("write-" + name);
+        Permission writePermission = permissionRepository.findByName(topic.getWritePermission());
         if (writePermission == null) {
             logger.warn("Write permission not found");
         } else {
             writePermission.setName("write-" + newName);
             permissionRepository.save(writePermission);
         }
-        Permission deletePermission = permissionRepository.findByName("delete-" + name);
+        Permission deletePermission = permissionRepository.findByName(topic.getDeletePermission());
         if (deletePermission == null) {
             logger.warn("Delete permission not found");
         } else {
